@@ -59,9 +59,76 @@ function PositionRow({ contractId }: { contractId: string }) {
   );
 }
 
+/**
+ * Perpetual analogue of `PositionRow` above — same shape, backed by the
+ * parallel `/perpetuals` endpoint set (see `src/lib/api.ts`'s doc comment
+ * on `WatchedPerpetual` for why this is a separate type/row rather than a
+ * `market`-shaped union). A perpetual only ever has two states on-chain
+ * (`Open`/`Terminated`, no strike/expiry/settle), so unlike a classic
+ * market there's no resolved-yes/no outcome — just mark-to-market while
+ * open, or the fixed termination payout once closed.
+ */
+function PerpetualPositionRow({ contractId }: { contractId: string }) {
+  const { wallet } = useWallet();
+  const { data: perpetual } = useQuery({
+    queryKey: ['perpetual', contractId],
+    queryFn: () => api.getPerpetual(contractId),
+  });
+  const { data: state } = useQuery({
+    queryKey: ['perpetualState', contractId],
+    queryFn: () => api.getPerpetualState(contractId),
+  });
+  const { data: position } = useQuery({
+    queryKey: ['perpetualPosition', contractId, wallet?.address],
+    queryFn: () => api.getPerpetualPosition(contractId, wallet!.address),
+    enabled: !!wallet,
+  });
+  const { data: price } = useQuery({
+    queryKey: ['perpetualPrice', contractId],
+    queryFn: () => api.getPerpetualPrice(contractId),
+    enabled: state?.status === 'Open',
+  });
+
+  if (!perpetual || !state || !position) return null;
+  const pos = { yes: BigInt(position.yes), no: BigInt(position.no) };
+  if (pos.yes === 0n && pos.no === 0n) return null;
+
+  const isOpen = state.status === 'Open';
+  // `Terminated` pays out the exact same 0.5-collateral-per-complementary-
+  // pair formula as a classic market's `Cancelled` case (see
+  // `PerpetualTradeCard`'s doc comment on `canRedeem`, and
+  // `polaris-contracts/README.md`'s "The perpetual contract") —
+  // `redeemableValue` only knows the classic-market status union, so
+  // `'Cancelled'` is the equivalent case here, not a re-derivation of the
+  // same math.
+  const value = isOpen && price ? markToMarket(pos, price.yesBps, price.noBps) : redeemableValue('Cancelled', pos);
+
+  return (
+    <Link href={`/perpetual/${contractId}`}>
+      <Card className="transition-shadow hover:shadow-md">
+        <CardBody className="flex items-center justify-between">
+          <div>
+            <div className="text-sm font-semibold">XLM/USD perpetual</div>
+            <div className="mt-1 text-xs text-[var(--muted)]">
+              {stroopsToXlm(pos.yes)} YES / {stroopsToXlm(pos.no)} NO
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-sm font-semibold">{stroopsToXlm(value)} XLM</div>
+            <div className="mt-1">
+              <Badge tone={isOpen ? 'accent' : 'neutral'}>{isOpen ? 'mark-to-market' : 'terminated'}</Badge>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </Link>
+  );
+}
+
 export default function PortfolioPage() {
   const { wallet } = useWallet();
   const { data: markets } = useQuery({ queryKey: ['markets'], queryFn: api.listMarkets });
+  const { data: perpetuals } = useQuery({ queryKey: ['perpetuals'], queryFn: api.listPerpetuals });
 
   if (!wallet) {
     return <p className="text-sm text-[var(--muted)]">Sign in with a passkey to see your positions.</p>;
@@ -80,6 +147,7 @@ export default function PortfolioPage() {
       </p>
       <div className="space-y-3">
         {markets?.map((m) => <PositionRow key={m.contractId} contractId={m.contractId} />)}
+        {perpetuals?.map((p) => <PerpetualPositionRow key={p.contractId} contractId={p.contractId} />)}
       </div>
     </div>
   );
