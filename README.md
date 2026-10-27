@@ -20,7 +20,7 @@ This is one of three repos that make up Polaris:
 
 ## Live
 
-**[polaris-frontend-delta.vercel.app](https://polaris-frontend-delta.vercel.app)** — deployed on Vercel, talking to the live [polaris-oracle](https://polaris-oracle-api.fly.dev) backend.
+**[polaris-frontend-iota.vercel.app](https://polaris-frontend-iota.vercel.app)** — deployed on Vercel, talking to the live [polaris-oracle](https://polaris-oracle-api.fly.dev) backend.
 
 ## Contents
 
