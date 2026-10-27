@@ -1,6 +1,6 @@
 # polaris-frontend
 
-[![CI](https://github.com/only1dreamgene/polaris-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/only1dreamgene/polaris-frontend/actions/workflows/ci.yml)
+[![CI](https://github.com/PolarisQ-xyz/polaris-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/PolarisQ-xyz/polaris-frontend/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 Next.js 16 web app for **Polaris** — a fully-collateralized, non-custodial
@@ -14,13 +14,13 @@ This is one of three repos that make up Polaris:
 
 | Repo | Role |
 |---|---|
-| [polaris-contracts](https://github.com/only1dreamgene/polaris-contracts) | The on-chain rules: markets, perpetuals, the LP vault, passkey wallets |
-| [polaris-oracle](https://github.com/only1dreamgene/polaris-oracle) | NestJS backend — settlement automation, multi-oracle price relay, sponsored transactions, admin API |
+| [polaris-contracts](https://github.com/PolarisQ-xyz/polaris-contracts) | The on-chain rules: markets, perpetuals, the LP vault, passkey wallets |
+| [polaris-oracle](https://github.com/PolarisQ-xyz/polaris-oracle) | NestJS backend — settlement automation, multi-oracle price relay, sponsored transactions, admin API |
 | **polaris-frontend** (this repo) | The web app — this document |
 
 ## Live
 
-**[polaris-frontend-delta.vercel.app](https://polaris-frontend-delta.vercel.app)** — deployed on Vercel, talking to the live [polaris-oracle](https://polaris-oracle.fly.dev) backend.
+**[polaris-frontend-delta.vercel.app](https://polaris-frontend-delta.vercel.app)** — deployed on Vercel, talking to the live [polaris-oracle](https://polaris-oracle-api.fly.dev) backend.
 
 ## Contents
 
@@ -272,9 +272,9 @@ rather than reimplementing any of them.
 
 **Scope this round**: buy + redeem-after-`terminate()` only — the same
 scope classic markets' own trade card has today
-([tracked as an open issue](https://github.com/only1dreamgene/polaris-frontend/issues/1)
+([tracked as an open issue](https://github.com/PolarisQ-xyz/polaris-frontend/issues/1)
 for classic markets,
-[and here](https://github.com/only1dreamgene/polaris-frontend/issues/2)
+[and here](https://github.com/PolarisQ-xyz/polaris-frontend/issues/2)
 for perpetuals).
 
 `admin/perpetuals` has a `Checkpoint` button alongside `Terminate` — calls
