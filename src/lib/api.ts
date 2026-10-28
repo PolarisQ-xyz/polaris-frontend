@@ -197,6 +197,10 @@ export const api = {
       body: JSON.stringify({ publicKeyHex }),
     }),
 
+  /** Spendable native-XLM collateral balance, in stroops — same shape for a passkey or email-custodial wallet. */
+  getBalance: (address: string) =>
+    request<{ balanceStroops: string }>(`/wallets/balance?address=${encodeURIComponent(address)}`),
+
   prepareAuth: (params: {
     walletAddress: string;
     contractId: string;

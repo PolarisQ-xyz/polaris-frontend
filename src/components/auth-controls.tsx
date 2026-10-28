@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useWallet } from '@/lib/wallet-provider';
 import { Button } from '@/components/ui/button';
-import { shortAddress } from '@/lib/format';
+import { api } from '@/lib/api';
+import { shortAddress, stroopsToXlm } from '@/lib/format';
 
 const STEP_LABEL: Record<string, string> = {
   passkey: 'Confirm with Face ID / Touch ID…',
@@ -39,6 +41,13 @@ export function AuthControls({ compact = false }: { compact?: boolean }) {
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
 
+  const { data: balance } = useQuery({
+    queryKey: ['walletBalance', wallet?.address],
+    queryFn: () => api.getBalance(wallet!.address),
+    enabled: !!wallet,
+    refetchInterval: 20_000,
+  });
+
   const linkClass = `${compact ? 'text-[10px]' : 'text-[11px]'} text-[var(--muted)] underline hover:text-[var(--ink)]`;
   const inputClass = `h-8 rounded-lg border border-[var(--line)] bg-[var(--surface)] px-2 ${compact ? 'text-xs' : 'text-xs'}`;
   const btnSize = compact ? 'sm' : 'sm';
@@ -46,6 +55,9 @@ export function AuthControls({ compact = false }: { compact?: boolean }) {
   if (wallet) {
     return (
       <div className="flex items-center gap-2">
+        {balance && (
+          <span className="text-xs font-mono text-[var(--muted)]">{stroopsToXlm(balance.balanceStroops)} XLM</span>
+        )}
         <span className="rounded-full bg-[var(--surface-2)] px-3 py-1.5 text-xs font-mono">
           {shortAddress(wallet.address)}
         </span>
