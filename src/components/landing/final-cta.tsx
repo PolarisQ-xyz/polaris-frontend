@@ -14,8 +14,8 @@ export function FinalCta() {
           No download, no seed phrase, no waiting for a claim transaction.
         </p>
         <div className="mt-8">
-          <Link href="/" className={cn(buttonVariants({ variant: 'primary', size: 'lg' }))}>
-            Start Predicting
+          <Link href="/?new=1" className={cn(buttonVariants({ variant: 'primary', size: 'lg' }))}>
+            Create your account
           </Link>
         </div>
       </Reveal>

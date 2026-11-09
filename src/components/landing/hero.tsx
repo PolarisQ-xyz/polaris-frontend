@@ -32,8 +32,11 @@ export function Hero() {
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-4">
-            <Link href="/" className={cn(buttonVariants({ variant: 'primary', size: 'lg' }), 'shadow-lg shadow-[#5b4fe033]')}>
-              Start Predicting
+            <Link
+              href="/?new=1"
+              className={cn(buttonVariants({ variant: 'primary', size: 'lg' }), 'shadow-lg shadow-[#5b4fe033]')}
+            >
+              Create your account
             </Link>
             <a href="#how-it-works" className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}>
               See how it works
