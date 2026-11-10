@@ -1,5 +1,7 @@
 import { config } from './config';
-import type { WebAuthnAssertion } from './webauthn';
+
+/** A hung oracle (not erroring, just never responding) would otherwise leave every caller's busy state stuck forever with no recourse — same failure shape `freighter-wallet.ts`'s `withTimeout` guards against for signing. */
+const REQUEST_TIMEOUT_MS = 20_000;
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${config.oracleUrl}${path}`, {
@@ -10,6 +12,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     // which simply has no cookie to send.
     credentials: 'include',
     headers: { 'content-type': 'application/json', ...init?.headers },
+    signal: init?.signal ?? AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   if (!res.ok) {
     const body = await res.text().catch(() => '');
@@ -191,40 +194,11 @@ export const api = {
       body: JSON.stringify({ address }),
     }),
 
-  deployWallet: (publicKeyHex: string) =>
-    request<{ address: string }>('/wallets/deploy', {
-      method: 'POST',
-      body: JSON.stringify({ publicKeyHex }),
-    }),
-
-  /** Spendable native-XLM collateral balance, in stroops — same shape for a passkey or email-custodial wallet. */
+  /** Spendable native-XLM collateral balance, in stroops — same shape for a Freighter or email-custodial wallet. */
   getBalance: (address: string) =>
     request<{ balanceStroops: string }>(`/wallets/balance?address=${encodeURIComponent(address)}`),
 
-  prepareAuth: (params: {
-    walletAddress: string;
-    contractId: string;
-    function: string;
-    args: Record<string, string | number>;
-    /** Which compiled contract spec the backend encodes `args` against — see `polaris-oracle/README.md`'s "Perpetual markets". Omit for a classic market. */
-    contractKind?: 'market' | 'perpetual';
-  }) =>
-    request<{ entryXdr: string; signaturePayloadHex: string; validUntilLedgerSeq: number }>(
-      '/wallets/tx/prepare',
-      { method: 'POST', body: JSON.stringify(params) },
-    ),
-
-  submitAuth: (params: {
-    entryXdr: string;
-    validUntilLedgerSeq: number;
-    contractId: string;
-    function: string;
-    args: Record<string, string | number>;
-    assertion: WebAuthnAssertion;
-    contractKind?: 'market' | 'perpetual';
-  }) => request<{ txHash: string }>('/wallets/tx/submit', { method: 'POST', body: JSON.stringify(params) }),
-
-  // email login (fallback for browsers/webviews without usable WebAuthn — see `wallet-provider.tsx`)
+  // email login (fallback for browsers/devices without a Freighter-like wallet extension — see `wallet-provider.tsx`)
   requestEmailCode: (email: string) =>
     request<{ sent: boolean }>('/auth/email/request', { method: 'POST', body: JSON.stringify({ email }) }),
   verifyEmailCode: (email: string, code: string) =>

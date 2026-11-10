@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { api, messageFromApiError } from '@/lib/api';
 import { useWallet } from '@/lib/wallet-provider';
-import { callAsWallet } from '@/lib/passkey-wallet';
+import { callAsWallet } from '@/lib/freighter-wallet';
 import { Card, CardBody } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ResultReveal } from '@/components/result-reveal';
@@ -15,12 +15,6 @@ import { useNextRound } from '@/lib/use-next-round';
 
 /** 2% — how much worse a fill is allowed to be than the quote at click-time before the trade reverts instead of silently eating the difference. */
 const SLIPPAGE_TOLERANCE_BPS = 200;
-
-const STEP_LABEL: Record<string, string> = {
-  passkey: 'Confirm with Face ID / Touch ID…',
-  deploying: 'Setting up your account…',
-  done: 'Ready',
-};
 
 /**
  * The buy/redeem card — the one piece of trade UI in this app, used by both
@@ -59,7 +53,7 @@ export function TradeCard({
    */
   rolloverFromMarketId?: string;
 }) {
-  const { wallet, connecting, creationStep, error: walletError, createWallet, cancelCreation } = useWallet();
+  const { wallet, connecting, error: walletError, connectWallet } = useWallet();
   const queryClient = useQueryClient();
 
   const [side, setSide] = useState<'Yes' | 'No'>('Yes');
@@ -149,14 +143,14 @@ export function TradeCard({
     setTxError(null);
     setTxResult(null);
 
-    // No wallet yet — the passkey ceremony only fires now, at the moment of
-    // commit, so a visitor can pick a side, an amount, and see the payout
-    // before ever touching auth. `createWallet` returns the fresh wallet
-    // directly rather than relying on `wallet` from context, which won't
-    // reflect the new value until the next render.
+    // No wallet yet — the Freighter connect prompt only fires now, at the
+    // moment of commit, so a visitor can pick a side, an amount, and see the
+    // payout before ever touching a wallet. `connectWallet` returns the
+    // fresh wallet directly rather than relying on `wallet` from context,
+    // which won't reflect the new value until the next render.
     let activeWallet = wallet;
     if (!activeWallet) {
-      activeWallet = await createWallet('polaris-bettor');
+      activeWallet = await connectWallet();
       if (!activeWallet) return; // failed/cancelled — `walletError` from context already explains why
     }
 
@@ -270,29 +264,18 @@ export function TradeCard({
               disabled={busy || connecting || !state || !fee || !payoutPreview}
             >
               {connecting
-                ? creationStep
-                  ? STEP_LABEL[creationStep]
-                  : 'Setting up…'
+                ? 'Confirm in Freighter…'
                 : busy
                   ? wallet?.kind === 'email'
                     ? rolloverAmount > 0n
                       ? 'Rolling into this round…'
                       : 'Placing bet…'
-                    : 'Confirm with passkey…'
+                    : 'Confirm in Freighter…'
                   : `Buy ${side}`}
             </Button>
-            {connecting && (
-              <button
-                type="button"
-                onClick={cancelCreation}
-                className="block w-full text-center text-xs text-[var(--muted)] underline hover:text-[var(--ink)]"
-              >
-                Cancel
-              </button>
-            )}
             {!wallet && !connecting && (
               <p className="text-center text-[11px] text-[var(--faint)]">
-                No XLM needed &mdash; just Face ID / Touch ID, the first time you buy
+                Connects Freighter &mdash; sign with your own wallet, no custodial account
               </p>
             )}
           </div>

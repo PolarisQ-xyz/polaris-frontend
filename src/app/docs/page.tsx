@@ -32,12 +32,20 @@ export default function DocsPage() {
 
       <section className="mb-8">
         <h2 className="mb-2 text-xl font-semibold">Signing in</h2>
+        <p className="mb-2 text-sm leading-relaxed">
+          &ldquo;Connect Wallet&rdquo; connects Freighter, the browser-extension Stellar wallet —
+          same model as any other Soroban dapp. There&rsquo;s no custodial account and no smart
+          wallet in this path: trades are built and simulated client-side, then signed by
+          Freighter itself and submitted straight to the network. You pay your own transaction
+          fees and need some XLM in your own account to trade.
+        </p>
         <p className="text-sm leading-relaxed">
-          No browser extension, no seed phrase. &ldquo;Sign in with passkey&rdquo; registers a
-          WebAuthn credential (Face ID / Touch ID / Windows Hello / a hardware key) and deploys a
-          Soroban smart-wallet contract for it — a custom account whose <code>__check_auth</code>{' '}
-          verifies your passkey&rsquo;s secp256r1 signature on-chain. The app pays the deploy fee
-          and every trade&rsquo;s transaction fee; you never need to hold XLM just to interact.
+          No Freighter installed? The email fallback registers a one-time code instead, and the
+          backend signs trades on your behalf against a server-held Soroban smart-wallet contract
+          — a custom account whose <code>__check_auth</code> verifies a server-generated
+          WebAuthn-shaped signature, not a browser passkey. This path is custodial by design (see
+          the trust model below) and exists purely so someone without a wallet extension can still
+          try the product.
         </p>
       </section>
 
@@ -81,9 +89,11 @@ export default function DocsPage() {
           <li>Settlement prices are verified on-chain; the backend is an untrusted relay.</li>
           <li>Cancellation after grace period is permissionless — liveness never depends on one party.</li>
           <li>
-            The passkey smart-wallet pattern is adapted from a published reference
-            implementation and grounded in real, self-verified cryptography, but has not had an
-            independent security review — don&rsquo;t treat this as production-grade custody.
+            Connecting Freighter is fully non-custodial — Polaris never holds your keys or signs
+            on your behalf. The email fallback is custodial: its server-held smart-wallet pattern
+            is adapted from a published reference implementation and grounded in real,
+            self-verified cryptography, but has not had an independent security review —
+            don&rsquo;t treat it as production-grade custody.
           </li>
         </ul>
       </section>
@@ -92,8 +102,8 @@ export default function DocsPage() {
         <h2 className="mb-2 text-xl font-semibold">Repos</h2>
         <p className="text-sm leading-relaxed">
           <code>polaris-contracts</code> (Rust/Soroban), <code>polaris-oracle</code> (NestJS
-          settlement automation + passkey relay), <code>polaris-frontend</code> (this app). Each
-          has its own README with the details this page glosses over.
+          settlement automation + the email fallback&rsquo;s signing relay), <code>polaris-frontend</code>{' '}
+          (this app). Each has its own README with the details this page glosses over.
         </p>
       </section>
     </div>

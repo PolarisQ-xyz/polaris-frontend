@@ -3,8 +3,8 @@ import { Reveal } from './reveal';
 
 const FEATURES: { title: string; body: string; icon: React.ReactNode }[] = [
   {
-    title: 'Passkey sign-in',
-    body: 'Your device’s biometrics unlock a secure passkey account directly — no extension, no browser plugin, no seed phrase to lose.',
+    title: 'Connect your own wallet',
+    body: 'Freighter signs every trade yourself — no custodial account holding your funds. No Freighter yet? Sign in with email instead.',
     icon: (
       <path d="M12 2a5 5 0 0 0-5 5v2H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5Zm-3 7V7a3 3 0 1 1 6 0v2Zm3 4a2 2 0 1 1 0 4a2 2 0 0 1 0-4Z" />
     ),
@@ -26,7 +26,7 @@ const FEATURES: { title: string; body: string; icon: React.ReactNode }[] = [
   },
   {
     title: 'Embeddable anywhere',
-    body: 'Drop a live market into any site with one iframe — the same passkey works everywhere it’s embedded.',
+    body: 'Drop a live market into any site with one iframe — the same wallet connection works everywhere it’s embedded.',
     icon: <path d="M8 4 3 12l5 8M16 4l5 8-5 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />,
   },
   {

@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { api, messageFromApiError } from '@/lib/api';
 import { useWallet } from '@/lib/wallet-provider';
-import { callAsWallet } from '@/lib/passkey-wallet';
+import { callAsWallet } from '@/lib/freighter-wallet';
 import { Card, CardBody } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { stroopsToXlm, xlmToStroops, shortAddress } from '@/lib/format';
@@ -13,12 +13,6 @@ import { estimateBuyOut, withSlippageTolerance } from '@/lib/amm';
 
 /** Same floor as `TradeCard` — see its doc comment. */
 const SLIPPAGE_TOLERANCE_BPS = 200;
-
-const STEP_LABEL: Record<string, string> = {
-  passkey: 'Confirm with Face ID / Touch ID…',
-  deploying: 'Setting up your account…',
-  done: 'Ready',
-};
 
 /**
  * `polaris-perpetual`'s trading widget — deliberately a separate component
@@ -45,7 +39,7 @@ export function PerpetualTradeCard({
   className?: string;
   bodyClassName?: string;
 }) {
-  const { wallet, connecting, creationStep, error: walletError, createWallet, cancelCreation } = useWallet();
+  const { wallet, connecting, error: walletError, connectWallet } = useWallet();
   const queryClient = useQueryClient();
 
   const [side, setSide] = useState<'Yes' | 'No'>('Yes');
@@ -109,7 +103,7 @@ export function PerpetualTradeCard({
 
     let activeWallet = wallet;
     if (!activeWallet) {
-      activeWallet = await createWallet('polaris-bettor');
+      activeWallet = await connectWallet();
       if (!activeWallet) return;
     }
 
@@ -218,27 +212,16 @@ export function PerpetualTradeCard({
               disabled={busy || connecting || !state || !fee || !payoutPreview}
             >
               {connecting
-                ? creationStep
-                  ? STEP_LABEL[creationStep]
-                  : 'Setting up…'
+                ? 'Confirm in Freighter…'
                 : busy
                   ? wallet?.kind === 'email'
                     ? 'Placing trade…'
-                    : 'Confirm with passkey…'
+                    : 'Confirm in Freighter…'
                   : `Buy ${side}`}
             </Button>
-            {connecting && (
-              <button
-                type="button"
-                onClick={cancelCreation}
-                className="block w-full text-center text-xs text-[var(--muted)] underline hover:text-[var(--ink)]"
-              >
-                Cancel
-              </button>
-            )}
             {!wallet && !connecting && (
               <p className="text-center text-[11px] text-[var(--faint)]">
-                No XLM needed &mdash; just Face ID / Touch ID, the first time you trade
+                Connects Freighter &mdash; sign with your own wallet, no custodial account
               </p>
             )}
           </div>

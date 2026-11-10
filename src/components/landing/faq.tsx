@@ -11,7 +11,7 @@ const QUESTIONS = [
   },
   {
     q: 'Do I need to already own crypto?',
-    a: "No wallet, no seed phrase, and no XLM required just to sign in — a passkey (Face ID, Touch ID, or a hardware key) creates a secure passkey account for you. You'll need a small amount of XLM to actually trade.",
+    a: "You'll need the Freighter wallet extension and a small amount of XLM to trade — same as any other Stellar app. Don't have a wallet yet? Sign in with email instead and skip both.",
   },
   {
     q: 'Is my money safe?',

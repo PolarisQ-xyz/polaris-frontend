@@ -7,29 +7,22 @@ import { Button } from '@/components/ui/button';
 import { api } from '@/lib/api';
 import { shortAddress, stroopsToXlm } from '@/lib/format';
 
-const STEP_LABEL: Record<string, string> = {
-  passkey: 'Confirm with Face ID / Touch ID…',
-  deploying: 'Setting up your account…',
-  done: 'Ready',
-};
-
 /**
- * The full sign-in state machine — passkey (one click) with an email
- * fallback (see `EmailAuthService`'s doc comment in polaris-oracle for why
- * that exists), plus sign-out once a wallet exists. Shared between the
- * header (`(app)/layout.tsx`) and the embed widget rather than duplicated,
- * since the state machine itself (five distinct phases: signed-in,
- * passkey-in-flight, email-idle, email-code-sent, signed-out) is identical
- * between them — only sizing differs, via `compact`.
+ * The full sign-in state machine — connect a Stellar wallet (Freighter) in
+ * one click, with an email fallback (see `EmailAuthService`'s doc comment
+ * in polaris-oracle for why that exists), plus sign-out once a wallet
+ * exists. Shared between the header (`(app)/layout.tsx`) and the embed
+ * widget rather than duplicated, since the state machine itself (five
+ * distinct phases: signed-in, connecting, email-idle, email-code-sent,
+ * signed-out) is identical between them — only sizing differs, via
+ * `compact`.
  */
 export function AuthControls({ compact = false }: { compact?: boolean }) {
   const {
     wallet,
     connecting,
-    creationStep,
-    webauthnSupported,
-    createWallet,
-    cancelCreation,
+    freighterAvailable,
+    connectWallet,
     emailStep,
     emailBusy,
     requestEmailCode,
@@ -42,13 +35,13 @@ export function AuthControls({ compact = false }: { compact?: boolean }) {
   const [code, setCode] = useState('');
 
   // Landing-page CTAs (`?new=1`, see hero.tsx/final-cta.tsx) land here
-  // rather than silently triggering the passkey prompt on page load —
-  // WebAuthn's navigator.credentials.create() requires a real user
-  // gesture, a query param alone can't satisfy that. This just relabels
-  // and highlights the actual button a first-time visitor needs to click,
-  // instead of leaving them to discover a plain "Sign in" on their own.
-  // Read via window.location (not useSearchParams) so this component
-  // doesn't force a Suspense boundary onto every page that renders it.
+  // rather than silently opening Freighter's connect prompt on page load —
+  // that requires a real user gesture, a query param alone can't satisfy
+  // it. This just relabels and highlights the actual button a first-time
+  // visitor needs to click, instead of leaving them to discover a plain
+  // "Connect" on their own. Read via window.location (not useSearchParams)
+  // so this component doesn't force a Suspense boundary onto every page
+  // that renders it.
   //
   // Deliberately not a lazy useState initializer, despite what the
   // set-state-in-effect lint rule suggests — same reasoning as
@@ -96,18 +89,13 @@ export function AuthControls({ compact = false }: { compact?: boolean }) {
 
   if (connecting) {
     return (
-      <div className="flex flex-col items-end gap-1">
-        <Button size={btnSize} disabled>
-          {creationStep ? STEP_LABEL[creationStep] : 'Creating…'}
-        </Button>
-        <button type="button" onClick={cancelCreation} className={linkClass}>
-          Cancel
-        </button>
-      </div>
+      <Button size={btnSize} disabled>
+        Confirm in Freighter…
+      </Button>
     );
   }
 
-  const effectiveShowEmail = showEmail || !webauthnSupported;
+  const effectiveShowEmail = showEmail || freighterAvailable === false;
 
   if (effectiveShowEmail) {
     if (emailStep === 'code-sent') {
@@ -170,9 +158,18 @@ export function AuthControls({ compact = false }: { compact?: boolean }) {
             {emailBusy ? 'Sending…' : 'Send code'}
           </Button>
         </div>
-        {webauthnSupported && (
+        {freighterAvailable === false ? (
+          <a
+            href="https://freighter.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={linkClass}
+          >
+            Don&rsquo;t have Freighter? Install it →
+          </a>
+        ) : (
           <button type="button" onClick={() => setShowEmail(false)} className={linkClass}>
-            Use a passkey instead
+            Use a wallet instead
           </button>
         )}
       </form>
@@ -183,23 +180,19 @@ export function AuthControls({ compact = false }: { compact?: boolean }) {
     <div className="flex flex-col items-end gap-1">
       <Button
         size={btnSize}
-        onClick={() => void createWallet('polaris-bettor')}
+        onClick={() => void connectWallet()}
         className={firstTimeIntent ? 'animate-pulse ring-2 ring-[var(--accent)] ring-offset-2' : undefined}
       >
-        {firstTimeIntent
-          ? 'Create your account'
-          : compact
-            ? 'Sign in with passkey'
-            : (
-              <>
-                <span className="sm:hidden">Sign in</span>
-                <span className="hidden sm:inline">Sign in with passkey</span>
-              </>
-            )}
+        {compact ? 'Connect Wallet' : (
+          <>
+            <span className="sm:hidden">Connect</span>
+            <span className="hidden sm:inline">Connect Wallet</span>
+          </>
+        )}
       </Button>
       {firstTimeIntent && (
         <p className="max-w-[220px] text-right text-[11px] text-[var(--muted)]">
-          Uses Face ID / Touch ID — no password, no seed phrase, no app to install.
+          Connects Freighter — sign every trade yourself, no custodial account.
         </p>
       )}
       <button type="button" onClick={() => setShowEmail(true)} className={linkClass}>

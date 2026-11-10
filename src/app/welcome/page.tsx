@@ -11,9 +11,9 @@ import { FinalCta } from '@/components/landing/final-cta';
 import { LandingFooter } from '@/components/landing/landing-footer';
 
 export const metadata: Metadata = {
-  title: 'Polaris — Predict XLM. No wallet required.',
+  title: 'Polaris — Predict XLM. Trade it with your own wallet.',
   description:
-    'A fully-collateralized prediction market on XLM/USD, settled automatically by a live price feed. Sign in with a passkey — no browser extension, no seed phrase.',
+    'A fully-collateralized prediction market on XLM/USD, settled automatically by a live price feed. Connect Freighter and sign every trade yourself — no custodial account.',
 };
 
 export default function WelcomePage() {

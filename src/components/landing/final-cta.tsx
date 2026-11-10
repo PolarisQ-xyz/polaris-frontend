@@ -11,11 +11,11 @@ export function FinalCta() {
           Your first prediction is thirty seconds away
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-lg text-[var(--ink-soft)]">
-          No download, no seed phrase, no waiting for a claim transaction.
+          No waiting for a claim transaction. No Freighter? Sign in with email instead.
         </p>
         <div className="mt-8">
           <Link href="/?new=1" className={cn(buttonVariants({ variant: 'primary', size: 'lg' }))}>
-            Create your account
+            Connect wallet
           </Link>
         </div>
       </Reveal>

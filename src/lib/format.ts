@@ -9,8 +9,20 @@ export function stroopsToXlm(stroops: string | bigint, fractionDigits = 2): stri
   return `${whole.toString()}.${fracStr}`;
 }
 
+/**
+ * Throws a human-readable `Error` (not a raw `BigInt()` `SyntaxError`) for
+ * anything that isn't a plain non-negative decimal — e.g. `1,000` from a
+ * comma-thousands-separator locale, or stray text. `messageFromApiError`
+ * already passes a plain `Error`'s `.message` straight through unmodified
+ * when it contains no JSON body, so a clean message here is the whole fix;
+ * no new error type or extra handling needed at any call site.
+ */
 export function xlmToStroops(xlm: string): bigint {
-  const [whole, frac = ''] = xlm.trim().split('.');
+  const trimmed = xlm.trim();
+  if (!/^\d+(\.\d+)?$/.test(trimmed)) {
+    throw new Error('Enter a valid amount, e.g. 10 or 10.5');
+  }
+  const [whole, frac = ''] = trimmed.split('.');
   const fracPadded = (frac + '0000000').slice(0, 7);
   return BigInt(whole || '0') * STROOPS_PER_XLM + BigInt(fracPadded || '0');
 }

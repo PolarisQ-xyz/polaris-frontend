@@ -131,7 +131,7 @@ export default function PortfolioPage() {
   const { data: perpetuals } = useQuery({ queryKey: ['perpetuals'], queryFn: api.listPerpetuals });
 
   if (!wallet) {
-    return <p className="text-sm text-[var(--muted)]">Sign in with a passkey to see your positions.</p>;
+    return <p className="text-sm text-[var(--muted)]">Connect your wallet to see your positions.</p>;
   }
 
   return (

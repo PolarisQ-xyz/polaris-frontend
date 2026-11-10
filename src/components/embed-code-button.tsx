@@ -5,10 +5,9 @@ import { Button } from '@/components/ui/button';
 
 /**
  * Generates the `<iframe>` snippet for a market's embeddable widget
- * (`/embed/[id]`). The `allow` attribute here isn't decorative — without it
- * every WebAuthn prompt inside the iframe fails silently on the embedding
- * page, since a cross-origin iframe has no passkey permissions by default.
- * See that page's doc comment for the full story.
+ * (`/embed/[id]`). No special `allow` permissions needed: Freighter is a
+ * browser extension, not a page API gated by permissions policy, so it
+ * works inside a cross-origin iframe same as the top-level app.
  */
 export function EmbedCodeButton({ contractId }: { contractId: string }) {
   const [open, setOpen] = useState(false);
@@ -18,7 +17,6 @@ export function EmbedCodeButton({ contractId }: { contractId: string }) {
   const origin = window.location.origin;
   const snippet = `<iframe
   src="${origin}/embed/${contractId}"
-  allow="publickey-credentials-get *; publickey-credentials-create *"
   width="360" height="420"
   style="border:0;border-radius:16px;overflow:hidden"
   title="Polaris market"
@@ -46,8 +44,8 @@ export function EmbedCodeButton({ contractId }: { contractId: string }) {
             {copied ? 'Copied' : 'Copy'}
           </Button>
           <p className="text-xs text-[var(--faint)]">
-            The <code>allow</code> attribute is required — without it, passkey prompts inside the
-            embed fail silently on most browsers.
+            No special permissions needed — Freighter and the email fallback both work inside the
+            embed as-is.
           </p>
         </div>
       )}

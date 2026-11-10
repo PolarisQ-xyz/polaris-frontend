@@ -1,12 +1,7 @@
 import { Reveal } from './reveal';
 
-// Line-wrapped so it never needs horizontal scroll to read — a newline
-// inside an HTML attribute value is just whitespace to the parser, so this
-// is still exactly what you'd paste in, not a display-only simplification.
 const SNIPPET = `<iframe
   src="https://polaris.app/embed/<market-id>"
-  allow="publickey-credentials-get *;
-         publickey-credentials-create *"
   width="360"
   height="420"
 ></iframe>`;
@@ -23,7 +18,7 @@ export function ForBuilders() {
             Embed a market on your own site
           </h2>
           <p className="mt-4 max-w-md text-lg leading-relaxed text-[var(--ink-soft)]">
-            One iframe, one attribute for passkey permissions. The same wallet a visitor uses on
+            Just an iframe, no special permissions. The same wallet a visitor connects on
             your site works everywhere else Polaris is embedded — it&rsquo;s a portable identity,
             not a separate login per surface.
           </p>

@@ -22,13 +22,13 @@ export function Hero() {
           <h1 className="text-balance text-[clamp(2.25rem,5.5vw,3.75rem)] font-extrabold leading-[1.05] tracking-tight text-[var(--ink)]">
             Predict XLM&rsquo;s price.
             <br />
-            No wallet required.
+            Trade it with your own wallet.
           </h1>
 
           <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-[var(--ink-soft)]">
             Polaris is a fully-collateralized prediction market, settled automatically by a
-            live price feed. Sign in with Face ID or Touch ID — no browser extension, no seed
-            phrase — and trade live, AMM-priced odds instead of locking in a static bet.
+            live price feed. Connect Freighter and sign every trade yourself — no custodial
+            account — and trade live, AMM-priced odds instead of locking in a static bet.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-4">
@@ -36,7 +36,7 @@ export function Hero() {
               href="/?new=1"
               className={cn(buttonVariants({ variant: 'primary', size: 'lg' }), 'shadow-lg shadow-[#5b4fe033]')}
             >
-              Create your account
+              Connect wallet
             </Link>
             <a href="#how-it-works" className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}>
               See how it works
@@ -44,7 +44,7 @@ export function Hero() {
           </div>
 
           <p className="mt-5 text-sm text-[var(--faint)]">
-            No app to install. No XLM required to get started.
+            No Freighter? Sign in with email instead — no extension needed.
           </p>
         </div>
 

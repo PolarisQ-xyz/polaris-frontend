@@ -4,7 +4,7 @@ import { use, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { api, messageFromApiError } from '@/lib/api';
 import { useWallet } from '@/lib/wallet-provider';
-import { callAsWallet } from '@/lib/passkey-wallet';
+import { callAsWallet } from '@/lib/freighter-wallet';
 import { Card, CardBody } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { OddsBar } from '@/components/odds-bar';
@@ -25,32 +25,17 @@ import { useNextRound } from '@/lib/use-next-round';
 
 const SLIPPAGE_TOLERANCE_BPS = 200; // 2%
 
-const STEP_LABEL: Record<string, string> = {
-  passkey: 'Confirm Face ID / Touch ID…',
-  deploying: 'Setting up your account…',
-  done: 'Ready',
-};
-
 /**
  * The embeddable version of the market detail page — meant to run inside a
- * third-party site's `<iframe>`, not as a standalone destination. Same
- * origin as the rest of this app (see the root layout / next.config.ts),
- * which is what actually matters here: WebAuthn's relying-party id is tied
- * to the document's origin, so a passkey registered in the flagship app is
- * only usable inside this iframe *because* both are served from the same
- * place — see this repo's README for why the widget couldn't live on
- * `polaris-oracle` instead without breaking that.
- *
- * The embedding page's `<iframe>` tag MUST include
- * `allow="publickey-credentials-get *; publickey-credentials-create *"` or
- * every passkey prompt in here silently fails — see the "Get embed code"
- * button on the full market page, which generates a snippet with this
- * already set.
+ * third-party site's `<iframe>`, not as a standalone destination. Freighter
+ * connects the same way here as anywhere else (it's a browser extension
+ * talking to whichever page is focused, not tied to this app's origin the
+ * way the old WebAuthn-based passkey flow was) — see this repo's README for
+ * why the widget couldn't live on `polaris-oracle` instead.
  */
 export default function EmbedMarketPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { wallet, connecting, creationStep, error: walletError, webauthnSupported, createWallet, cancelCreation } =
-    useWallet();
+  const { wallet, connecting, error: walletError, freighterAvailable, connectWallet } = useWallet();
   const queryClient = useQueryClient();
 
   const [side, setSide] = useState<'Yes' | 'No'>('Yes');
@@ -58,11 +43,11 @@ export default function EmbedMarketPage({ params }: { params: Promise<{ id: stri
   const [busy, setBusy] = useState(false);
   const [txResult, setTxResult] = useState<string | null>(null);
   const [txError, setTxError] = useState<string | null>(null);
-  // Manual escape hatch to the email flow — shown after a live passkey
+  // Manual escape hatch to the email flow — shown after a live Freighter
   // attempt fails (walletError set with no wallet yet), or forced on
-  // whenever this browser/webview has no WebAuthn API at all.
+  // whenever this browser/webview has no Freighter extension at all.
   const [preferEmail, setPreferEmail] = useState(false);
-  const showEmailFallback = !wallet && (preferEmail || !webauthnSupported);
+  const showEmailFallback = !wallet && (preferEmail || freighterAvailable === false);
 
   const { data: market } = useQuery({
     queryKey: ['market', id],
@@ -125,7 +110,7 @@ export default function EmbedMarketPage({ params }: { params: Promise<{ id: stri
 
     let activeWallet = wallet;
     if (!activeWallet) {
-      activeWallet = await createWallet('bettor');
+      activeWallet = await connectWallet();
       if (!activeWallet) return;
     }
 
@@ -232,29 +217,17 @@ export default function EmbedMarketPage({ params }: { params: Promise<{ id: stri
                 disabled={busy || connecting || !state || !fee || !payoutPreview}
               >
                 {connecting
-                  ? creationStep
-                    ? STEP_LABEL[creationStep]
-                    : 'Setting up…'
+                  ? 'Confirm in Freighter…'
                   : busy
                     ? wallet?.kind === 'email'
                       ? 'Placing bet…'
-                      : 'Confirm with passkey…'
+                      : 'Confirm in Freighter…'
                     : `Buy ${side}`}
               </Button>
-              {connecting ? (
-                <button
-                  type="button"
-                  onClick={cancelCreation}
-                  className="block w-full text-center text-[10px] text-[var(--faint)] underline"
-                >
-                  Cancel
-                </button>
-              ) : (
-                !wallet && (
-                  <p className="text-center text-[10px] text-[var(--faint)]">
-                    No XLM needed &mdash; just Face ID / Touch ID, the first time you buy
-                  </p>
-                )
+              {!wallet && !connecting && (
+                <p className="text-center text-[10px] text-[var(--faint)]">
+                  Connects Freighter &mdash; sign with your own wallet
+                </p>
               )}
             </div>
           )}

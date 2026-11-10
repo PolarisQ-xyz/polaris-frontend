@@ -2,8 +2,8 @@ import { Reveal } from './reveal';
 
 const STEPS = [
   {
-    title: 'Sign in with a passkey',
-    body: 'Face ID, Touch ID, or a hardware key. No browser extension, no seed phrase to lose.',
+    title: 'Connect Freighter',
+    body: 'One click, you sign every trade yourself. No Freighter? Sign in with email instead.',
   },
   {
     title: 'Pick YES or NO',

@@ -2,7 +2,7 @@ const ITEMS = [
   'Fully collateralized',
   'Settled by a live price feed',
   'No house edge',
-  'No seed phrase',
+  'You hold the keys',
 ];
 
 export function TrustStrip() {
