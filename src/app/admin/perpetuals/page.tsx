@@ -26,7 +26,7 @@ export default function AdminPerpetualsPage() {
   const [error, setError] = useState<string | null>(null);
   const [lastCheckpoint, setLastCheckpoint] = useState<Record<string, string>>({});
 
-  const { data: perpetuals } = useQuery({ queryKey: ['perpetuals'], queryFn: api.listPerpetuals });
+  const { data: perpetuals, isLoading } = useQuery({ queryKey: ['perpetuals'], queryFn: api.listPerpetuals });
 
   async function terminate(contractId: string) {
     setBusyId(contractId);
@@ -62,6 +62,7 @@ export default function AdminPerpetualsPage() {
       {error && <p className="mb-4 text-sm text-[var(--no)] break-all">{error}</p>}
 
       <div className="space-y-3">
+        {isLoading && <p className="text-sm text-[var(--muted)]">Loading perpetuals…</p>}
         {perpetuals?.map((p) => (
           <Card key={p.contractId}>
             <CardBody className="flex flex-wrap items-center justify-between gap-3">
