@@ -16,7 +16,7 @@ export default function AdminMarketsPage() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const { data: markets } = useQuery({ queryKey: ['markets'], queryFn: api.listMarkets });
+  const { data: markets, isLoading } = useQuery({ queryKey: ['markets'], queryFn: api.listMarkets });
 
   async function act(action: 'settle' | 'cancel', contractId: string) {
     setBusyId(contractId);
@@ -39,6 +39,7 @@ export default function AdminMarketsPage() {
       {error && <p className="mb-4 text-sm text-[var(--no)] break-all">{error}</p>}
 
       <div className="space-y-3">
+        {isLoading && <p className="text-sm text-[var(--muted)]">Loading markets…</p>}
         {markets?.map((m) => (
           <Card key={m.contractId}>
             <CardBody className="flex flex-wrap items-center justify-between gap-3">
@@ -71,6 +72,7 @@ export default function AdminMarketsPage() {
             </CardBody>
           </Card>
         ))}
+        {markets?.length === 0 && <p className="text-sm text-[var(--muted)]">No markets yet.</p>}
       </div>
     </div>
   );
