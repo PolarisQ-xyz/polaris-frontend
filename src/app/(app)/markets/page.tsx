@@ -29,7 +29,12 @@ function ChgCell({ yesBpsChange }: { yesBpsChange: number | null | undefined }) 
   const pct = Math.round(yesBpsChange / 100);
   const color = pct > 0 ? 'var(--yes)' : pct < 0 ? 'var(--no)' : 'var(--muted)';
   const sign = pct > 0 ? '+' : '';
-  return <span style={{ color }}>{sign}{pct}%</span>;
+  return (
+    <span style={{ color }}>
+      {sign}
+      {pct}%
+    </span>
+  );
 }
 
 /**
@@ -117,7 +122,11 @@ function MarketRow({ contractId }: { contractId: string }) {
  * linked from there, now a watchlist-style list rather than a card grid.
  */
 export default function AllMarketsPage() {
-  const { data: markets, isLoading, error } = useQuery({
+  const {
+    data: markets,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['markets'],
     queryFn: api.listMarkets,
     refetchInterval: 30_000,
@@ -126,12 +135,14 @@ export default function AllMarketsPage() {
   return (
     <div>
       <h1 className="mb-1 text-2xl font-bold">All markets</h1>
-      <p className="mb-6 text-sm text-[var(--muted)]">
-        Every XLM/USD market, open or closed.
-      </p>
+      <p className="mb-6 text-sm text-[var(--muted)]">Every XLM/USD market, open or closed.</p>
 
       {isLoading && <p className="text-sm text-[var(--muted)]">Loading markets…</p>}
-      {error && <p className="text-sm text-[var(--no)]">Couldn&rsquo;t reach the backend: {(error as Error).message}</p>}
+      {error && (
+        <p className="text-sm text-[var(--no)]">
+          Couldn&rsquo;t reach the backend: {(error as Error).message}
+        </p>
+      )}
       {markets && markets.length === 0 && (
         <p className="text-sm text-[var(--muted)]">No markets yet — an admin can create one from /create.</p>
       )}

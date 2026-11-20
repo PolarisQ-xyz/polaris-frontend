@@ -43,7 +43,10 @@ export function LandingHeader() {
           Polaris
         </Link>
 
-        <nav aria-label="Primary" className="hidden items-center gap-7 text-sm font-medium text-[var(--ink-soft)] md:flex">
+        <nav
+          aria-label="Primary"
+          className="hidden items-center gap-7 text-sm font-medium text-[var(--ink-soft)] md:flex"
+        >
           {NAV_LINKS.map((link) => (
             <a key={link.href} href={link.href} className="transition-colors hover:text-[var(--ink)]">
               {link.label}

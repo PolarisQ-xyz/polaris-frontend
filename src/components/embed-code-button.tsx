@@ -44,8 +44,7 @@ export function EmbedCodeButton({ contractId }: { contractId: string }) {
             {copied ? 'Copied' : 'Copy'}
           </Button>
           <p className="text-xs text-[var(--faint)]">
-            No special permissions needed — Freighter and the email fallback both work inside the
-            embed as-is.
+            No special permissions needed — Freighter and the email fallback both work inside the embed as-is.
           </p>
         </div>
       )}

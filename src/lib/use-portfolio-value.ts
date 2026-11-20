@@ -19,7 +19,11 @@ import { markToMarket, redeemableValue, type MarketStatus } from './portfolio';
 export function usePortfolioValue(): { total: bigint; hasPosition: boolean } | null {
   const { wallet } = useWallet();
   const { data: markets } = useQuery({ queryKey: ['markets'], queryFn: api.listMarkets, enabled: !!wallet });
-  const { data: perpetuals } = useQuery({ queryKey: ['perpetuals'], queryFn: api.listPerpetuals, enabled: !!wallet });
+  const { data: perpetuals } = useQuery({
+    queryKey: ['perpetuals'],
+    queryFn: api.listPerpetuals,
+    enabled: !!wallet,
+  });
 
   const marketResults = useQueries({
     queries: (markets ?? []).map((m) => ({

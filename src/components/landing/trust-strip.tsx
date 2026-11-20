@@ -1,9 +1,4 @@
-const ITEMS = [
-  'Fully collateralized',
-  'Settled by a live price feed',
-  'No house edge',
-  'You hold the keys',
-];
+const ITEMS = ['Fully collateralized', 'Settled by a live price feed', 'No house edge', 'You hold the keys'];
 
 export function TrustStrip() {
   return (

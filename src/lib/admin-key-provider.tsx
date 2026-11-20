@@ -88,7 +88,9 @@ export function AdminKeyProvider({ children }: { children: React.ReactNode }) {
     window.sessionStorage.setItem(STORAGE_KEY, key);
   }, []);
 
-  return <AdminKeyContext.Provider value={{ adminKey, setAdminKey, status }}>{children}</AdminKeyContext.Provider>;
+  return (
+    <AdminKeyContext.Provider value={{ adminKey, setAdminKey, status }}>{children}</AdminKeyContext.Provider>
+  );
 }
 
 export function useAdminKey(): AdminKeyContextValue {

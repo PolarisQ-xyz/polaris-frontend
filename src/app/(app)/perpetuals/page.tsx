@@ -55,7 +55,11 @@ function PerpetualCard({ contractId }: { contractId: string }) {
  * for one kind or the other).
  */
 export default function AllPerpetualsPage() {
-  const { data: perpetuals, isLoading, error } = useQuery({
+  const {
+    data: perpetuals,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['perpetuals'],
     queryFn: api.listPerpetuals,
     refetchInterval: 30_000,
@@ -69,7 +73,11 @@ export default function AllPerpetualsPage() {
       </p>
 
       {isLoading && <p className="text-sm text-[var(--muted)]">Loading perpetuals…</p>}
-      {error && <p className="text-sm text-[var(--no)]">Couldn&rsquo;t reach the backend: {(error as Error).message}</p>}
+      {error && (
+        <p className="text-sm text-[var(--no)]">
+          Couldn&rsquo;t reach the backend: {(error as Error).message}
+        </p>
+      )}
       {perpetuals && perpetuals.length === 0 && (
         <p className="text-sm text-[var(--muted)]">No perpetuals yet — an admin can create one.</p>
       )}

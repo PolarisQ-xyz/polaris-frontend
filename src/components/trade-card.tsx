@@ -101,7 +101,10 @@ export function TradeCard({
   const rolloverStatus = (rolloverState?.status ?? null) as MarketStatus | null;
   const rolloverAmount =
     rolloverStatus && rolloverStatus !== 'Open' && rolloverPosition
-      ? redeemableValue(rolloverStatus, { yes: BigInt(rolloverPosition.yes), no: BigInt(rolloverPosition.no) })
+      ? redeemableValue(rolloverStatus, {
+          yes: BigInt(rolloverPosition.yes),
+          no: BigInt(rolloverPosition.no),
+        })
       : 0n;
 
   // Prefill the amount field with the rollover payout exactly once — not on
@@ -158,7 +161,9 @@ export function TradeCard({
     try {
       if (rolloverFromMarketId && rolloverAmount > 0n) {
         await callAsWallet(activeWallet, rolloverFromMarketId, 'redeem', {});
-        await queryClient.invalidateQueries({ queryKey: ['position', rolloverFromMarketId, activeWallet.address] });
+        await queryClient.invalidateQueries({
+          queryKey: ['position', rolloverFromMarketId, activeWallet.address],
+        });
       }
 
       const stroops = xlmToStroops(amount);
@@ -199,7 +204,8 @@ export function TradeCard({
 
   const pos = position ? { yes: BigInt(position.yes), no: BigInt(position.no) } : null;
   const onChainStatus = (state?.status ?? null) as MarketStatus | null;
-  const canRedeem = pos && onChainStatus && onChainStatus !== 'Open' && redeemableValue(onChainStatus, pos) > 0n;
+  const canRedeem =
+    pos && onChainStatus && onChainStatus !== 'Open' && redeemableValue(onChainStatus, pos) > 0n;
 
   return (
     <Card className={className}>
@@ -210,7 +216,9 @@ export function TradeCard({
               <ResultReveal
                 status={onChainStatus}
                 position={pos}
-                nextRoundHref={nextRound ? `/market/${nextRound.contractId}?rolloverFrom=${marketId}` : undefined}
+                nextRoundHref={
+                  nextRound ? `/market/${nextRound.contractId}?rolloverFrom=${marketId}` : undefined
+                }
               />
             ) : (
               <p className="text-sm text-[var(--muted)]">Trading is closed.</p>
@@ -249,8 +257,8 @@ export function TradeCard({
             <div className="rounded-lg bg-[var(--surface-2)] px-3 py-2.5 text-sm">
               {payoutPreview ? (
                 <>
-                  You get <span className="font-semibold">{payoutPreview} XLM</span> if {side.toUpperCase()} wins{' '}
-                  <span className="text-[var(--faint)]">(you stake {amount || '0'} XLM)</span>
+                  You get <span className="font-semibold">{payoutPreview} XLM</span> if {side.toUpperCase()}{' '}
+                  wins <span className="text-[var(--faint)]">(you stake {amount || '0'} XLM)</span>
                 </>
               ) : (
                 <span className="text-[var(--faint)]">Enter an amount to see your payout</span>

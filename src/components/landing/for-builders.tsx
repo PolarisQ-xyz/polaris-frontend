@@ -14,13 +14,11 @@ export function ForBuilders() {
           <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-[var(--accent-ink)]">
             For builders
           </p>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Embed a market on your own site
-          </h2>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Embed a market on your own site</h2>
           <p className="mt-4 max-w-md text-lg leading-relaxed text-[var(--ink-soft)]">
-            Just an iframe, no special permissions. The same wallet a visitor connects on
-            your site works everywhere else Polaris is embedded — it&rsquo;s a portable identity,
-            not a separate login per surface.
+            Just an iframe, no special permissions. The same wallet a visitor connects on your site works
+            everywhere else Polaris is embedded — it&rsquo;s a portable identity, not a separate login per
+            surface.
           </p>
         </Reveal>
 

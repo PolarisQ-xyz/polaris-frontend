@@ -48,7 +48,12 @@ export function ResultReveal({
 
   return (
     <div
-      className={['result-reveal', `result-reveal--${tone}`, 'result-reveal--in', compact ? 'result-reveal--compact' : '']
+      className={[
+        'result-reveal',
+        `result-reveal--${tone}`,
+        'result-reveal--in',
+        compact ? 'result-reveal--compact' : '',
+      ]
         .filter(Boolean)
         .join(' ')}
     >

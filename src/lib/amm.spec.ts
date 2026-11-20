@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { estimateBuyOut, withSlippageTolerance } from './amm';
 
 describe('estimateBuyOut', () => {
-  it('matches the contract\'s own cpmm_out formula by hand', () => {
+  it("matches the contract's own cpmm_out formula by hand", () => {
     // Cross-checked by hand against the contract's own cpmm_out formula:
     // pool_yes=pool_no=10_000, fee=100bps (1%), buy 1000 YES.
     // effective_in = 1000 - 1000*100/10000 = 990

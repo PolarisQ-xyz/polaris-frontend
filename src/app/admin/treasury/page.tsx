@@ -34,14 +34,22 @@ export default function AdminTreasuryPage() {
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Card>
           <CardBody>
-            <div className="text-xs font-semibold uppercase tracking-wide text-[var(--faint)]">Current balance</div>
-            <div className="mt-1 text-2xl font-bold tabular-nums">{stroopsToXlm(data.balanceStroops)} XLM</div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-[var(--faint)]">
+              Current balance
+            </div>
+            <div className="mt-1 text-2xl font-bold tabular-nums">
+              {stroopsToXlm(data.balanceStroops)} XLM
+            </div>
           </CardBody>
         </Card>
         <Card>
           <CardBody>
-            <div className="text-xs font-semibold uppercase tracking-wide text-[var(--faint)]">Lifetime deposited</div>
-            <div className="mt-1 text-2xl font-bold tabular-nums">{stroopsToXlm(data.totalDepositedStroops)} XLM</div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-[var(--faint)]">
+              Lifetime deposited
+            </div>
+            <div className="mt-1 text-2xl font-bold tabular-nums">
+              {stroopsToXlm(data.totalDepositedStroops)} XLM
+            </div>
           </CardBody>
         </Card>
         <Card>
@@ -56,17 +64,23 @@ export default function AdminTreasuryPage() {
         <CardBody>
           <h2 className="mb-3 text-sm font-semibold">Recent withdrawals</h2>
           <p className="mb-3 text-xs text-[var(--faint)]">
-            Only withdrawals this backend itself made (market-factory seed funding) — deposits are made directly by
-            an operator via the Stellar CLI and never touch this backend, so there&apos;s no deposit history here.
+            Only withdrawals this backend itself made (market-factory seed funding) — deposits are made
+            directly by an operator via the Stellar CLI and never touch this backend, so there&apos;s no
+            deposit history here.
           </p>
           {data.recentWithdrawals.length === 0 ? (
             <p className="text-sm text-[var(--faint)]">No withdrawals logged yet.</p>
           ) : (
             <div className="space-y-2">
               {data.recentWithdrawals.map((flow) => (
-                <div key={flow.id} className="flex items-center justify-between border-t border-[var(--line)] py-2 text-sm first:border-t-0 first:pt-0">
+                <div
+                  key={flow.id}
+                  className="flex items-center justify-between border-t border-[var(--line)] py-2 text-sm first:border-t-0 first:pt-0"
+                >
                   <div>
-                    <div className="font-mono text-xs text-[var(--faint)]">{shortAddress(flow.market_contract_id)}</div>
+                    <div className="font-mono text-xs text-[var(--faint)]">
+                      {shortAddress(flow.market_contract_id)}
+                    </div>
                     <div className="text-xs text-[var(--faint)]">{formatDateTime(flow.created_at)}</div>
                   </div>
                   <div className="font-semibold tabular-nums">{stroopsToXlm(flow.amount_stroops)} XLM</div>

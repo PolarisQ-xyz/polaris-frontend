@@ -21,7 +21,10 @@ export default function ErrorBoundary({ reset }: { error: Error & { digest?: str
       </p>
       <div className="flex gap-3">
         <Button onClick={reset}>Try again</Button>
-        <Link href="/" className="flex items-center text-sm text-[var(--muted)] underline hover:text-[var(--ink)]">
+        <Link
+          href="/"
+          className="flex items-center text-sm text-[var(--muted)] underline hover:text-[var(--ink)]"
+        >
           Go home
         </Link>
       </div>

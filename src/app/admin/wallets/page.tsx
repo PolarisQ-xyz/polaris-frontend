@@ -29,7 +29,9 @@ export default function AdminWalletsPage() {
             <h2 className="text-sm font-semibold">Email wallets</h2>
             <Badge tone="accent">{data.emailWallets.length} total</Badge>
           </div>
-          <p className="mb-3 text-xs text-[var(--faint)]">Exhaustive — every one is created by this backend.</p>
+          <p className="mb-3 text-xs text-[var(--faint)]">
+            Exhaustive — every one is created by this backend.
+          </p>
           {data.emailWallets.length === 0 ? (
             <p className="text-sm text-[var(--faint)]">None yet.</p>
           ) : (
@@ -58,8 +60,8 @@ export default function AdminWalletsPage() {
             <Badge tone="accent">{data.passkeyAddressesSeen.length} total</Badge>
           </div>
           <p className="mb-3 text-xs text-[var(--faint)]">
-            Not exhaustive — there&apos;s no registry, on-chain or off, of every passkey wallet ever deployed. This
-            is only addresses that have made at least one trade since this dashboard shipped.
+            Not exhaustive — there&apos;s no registry, on-chain or off, of every passkey wallet ever deployed.
+            This is only addresses that have made at least one trade since this dashboard shipped.
           </p>
           {data.passkeyAddressesSeen.length === 0 ? (
             <p className="text-sm text-[var(--faint)]">None seen yet.</p>

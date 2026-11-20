@@ -40,8 +40,7 @@ export function TryItLive() {
           <Card className="max-w-md text-center">
             <CardBody className="space-y-4 py-10">
               <p className="text-sm text-[var(--muted)]">
-                No market is featured here yet — but every market in the app is embeddable exactly
-                like this.
+                No market is featured here yet — but every market in the app is embeddable exactly like this.
               </p>
               <Link href="/" className={cn(buttonVariants({ variant: 'primary', size: 'md' }))}>
                 Browse live markets

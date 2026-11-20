@@ -94,9 +94,7 @@ export default function EmbedMarketPage({ params }: { params: Promise<{ id: stri
   }, [amount, side, state, fee]);
 
   if (!market) {
-    return (
-      <div className="p-4 text-sm text-[var(--muted)]">Loading…</div>
-    );
+    return <div className="p-4 text-sm text-[var(--muted)]">Loading…</div>;
   }
 
   const isOpen = market.status === 'watching';
@@ -117,13 +115,7 @@ export default function EmbedMarketPage({ params }: { params: Promise<{ id: stri
     setBusy(true);
     try {
       const stroops = xlmToStroops(amount);
-      const estimate = estimateBuyOut(
-        side,
-        stroops,
-        BigInt(state.poolYes),
-        BigInt(state.poolNo),
-        fee.feeBps,
-      );
+      const estimate = estimateBuyOut(side, stroops, BigInt(state.poolYes), BigInt(state.poolNo), fee.feeBps);
       const minSharesOut = withSlippageTolerance(estimate, SLIPPAGE_TOLERANCE_BPS);
       const { txHash } = await callAsWallet(activeWallet, id, 'buy', {
         prediction: side,
@@ -161,9 +153,7 @@ export default function EmbedMarketPage({ params }: { params: Promise<{ id: stri
             {!isOpen && <span className="text-xs text-[var(--faint)]">{statusLabel(market.status)}</span>}
           </div>
 
-          <h2 className="text-sm font-semibold leading-snug">
-            XLM ≥ {centsToUsd(market.strikePriceCents)}?
-          </h2>
+          <h2 className="text-sm font-semibold leading-snug">XLM ≥ {centsToUsd(market.strikePriceCents)}?</h2>
           <p className="-mt-1.5 text-[10px] text-[var(--faint)]">
             Can&rsquo;t lose more than you stake &mdash; funds are locked until the market settles.
           </p>
@@ -186,11 +176,7 @@ export default function EmbedMarketPage({ params }: { params: Promise<{ id: stri
           ) : (
             <div className="space-y-2">
               <div className="grid grid-cols-2 gap-2">
-                <Button
-                  size="sm"
-                  variant={side === 'Yes' ? 'yes' : 'outline'}
-                  onClick={() => setSide('Yes')}
-                >
+                <Button size="sm" variant={side === 'Yes' ? 'yes' : 'outline'} onClick={() => setSide('Yes')}>
                   YES
                 </Button>
                 <Button size="sm" variant={side === 'No' ? 'no' : 'outline'} onClick={() => setSide('No')}>
@@ -206,7 +192,8 @@ export default function EmbedMarketPage({ params }: { params: Promise<{ id: stri
               />
               {payoutPreview && (
                 <p className="text-[10px] text-[var(--faint)]">
-                  You get <span className="font-semibold text-[var(--ink)]">{payoutPreview} XLM</span> if {side.toUpperCase()} wins
+                  You get <span className="font-semibold text-[var(--ink)]">{payoutPreview} XLM</span> if{' '}
+                  {side.toUpperCase()} wins
                 </p>
               )}
               <Button

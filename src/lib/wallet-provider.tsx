@@ -1,7 +1,12 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { connectFreighter, getConnectedAddress, isFreighterAvailable, type StoredWallet } from './freighter-wallet';
+import {
+  connectFreighter,
+  getConnectedAddress,
+  isFreighterAvailable,
+  type StoredWallet,
+} from './freighter-wallet';
 import { api, messageFromApiError } from './api';
 
 interface WalletContextValue {

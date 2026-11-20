@@ -24,9 +24,9 @@ export default function AdminFeeRevenuePage() {
       <h1 className="mb-2 text-2xl font-bold">Fee Revenue</h1>
       <p className="mb-6 text-sm text-[var(--muted)]">
         Estimated, not a ledger truth — captured live per trade (the contract&apos;s fee curve depends on a
-        market&apos;s pool state at the moment of the trade, which isn&apos;t recoverable after the fact). Counts
-        only <code className="text-xs">buy</code>/<code className="text-xs">sell</code> — the only two actions
-        that pay a fee.
+        market&apos;s pool state at the moment of the trade, which isn&apos;t recoverable after the fact).
+        Counts only <code className="text-xs">buy</code>/<code className="text-xs">sell</code> — the only two
+        actions that pay a fee.
       </p>
 
       <Card className="mb-6">

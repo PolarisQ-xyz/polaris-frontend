@@ -9,7 +9,14 @@ import { Badge } from '@/components/ui/badge';
 import { OddsBar } from '@/components/odds-bar';
 import { EmbedCodeButton } from '@/components/embed-code-button';
 import { TradeCard } from '@/components/trade-card';
-import { centsToUsd, formatCountdown, statusLabel, stroopsToXlm, isPollableStatus, RESOLUTION_POLL_MS } from '@/lib/format';
+import {
+  centsToUsd,
+  formatCountdown,
+  statusLabel,
+  stroopsToXlm,
+  isPollableStatus,
+  RESOLUTION_POLL_MS,
+} from '@/lib/format';
 
 export default function MarketDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -78,7 +85,9 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
             </div>
             <div>
               <div className="text-[var(--faint)]">Status</div>
-              <div className="font-semibold">{isOpen ? formatCountdown(market.expiry) : statusLabel(market.status)}</div>
+              <div className="font-semibold">
+                {isOpen ? formatCountdown(market.expiry) : statusLabel(market.status)}
+              </div>
             </div>
             {state && (
               <>
@@ -92,7 +101,8 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
                   <div className="text-[var(--faint)]">Fee now</div>
                   <div className="font-semibold">{fee ? `${(fee.feeBps / 100).toFixed(2)}%` : '…'}</div>
                   <div className="text-xs text-[var(--faint)]">
-                    {(state.baseFeeBps / 100).toFixed(2)}% → {(state.minFeeBps / 100).toFixed(2)}% as volume grows
+                    {(state.baseFeeBps / 100).toFixed(2)}% → {(state.minFeeBps / 100).toFixed(2)}% as volume
+                    grows
                   </div>
                 </div>
               </>

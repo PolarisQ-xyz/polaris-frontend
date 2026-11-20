@@ -51,7 +51,8 @@ export default function PerpetualDetailPage({ params }: { params: Promise<{ id: 
         <h1 className="mb-3 text-2xl font-bold">XLM/USD perpetual</h1>
         <p className="mb-4 text-sm text-[var(--muted)]">
           Continuous market — no expiry, no fixed settlement. Trade any time; an admin can wind it down with{' '}
-          <span className="font-mono text-xs">terminate()</span>, after which every position pays 0.5 XLM per share.
+          <span className="font-mono text-xs">terminate()</span>, after which every position pays 0.5 XLM per
+          share.
         </p>
 
         {price && (
@@ -80,14 +81,19 @@ export default function PerpetualDetailPage({ params }: { params: Promise<{ id: 
                   <div className="text-[var(--faint)]">Fee now</div>
                   <div className="font-semibold">{fee ? `${(fee.feeBps / 100).toFixed(2)}%` : '…'}</div>
                   <div className="text-xs text-[var(--faint)]">
-                    {(state.baseFeeBps / 100).toFixed(2)}% → {(state.minFeeBps / 100).toFixed(2)}% as volume grows
+                    {(state.baseFeeBps / 100).toFixed(2)}% → {(state.minFeeBps / 100).toFixed(2)}% as volume
+                    grows
                   </div>
                 </div>
                 <div>
                   <div className="text-[var(--faint)]">Last observed price</div>
-                  <div className="font-semibold">{hasCheckpoint ? centsToUsd(state.lastPriceCents) : '—'}</div>
+                  <div className="font-semibold">
+                    {hasCheckpoint ? centsToUsd(state.lastPriceCents) : '—'}
+                  </div>
                   <div className="text-xs text-[var(--faint)]">
-                    {hasCheckpoint ? 'informational only — no effect on trading' : 'no checkpoint recorded yet'}
+                    {hasCheckpoint
+                      ? 'informational only — no effect on trading'
+                      : 'no checkpoint recorded yet'}
                   </div>
                 </div>
               </>

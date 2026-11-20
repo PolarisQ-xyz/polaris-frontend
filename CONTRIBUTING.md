@@ -57,7 +57,7 @@ Commits should be atomic and diffs easy to read — don't mix formatting
 fixes with actual logic changes. Each commit should build, lint clean,
 and pass `npm test` on its own, not just at the tip of the branch.
 
-Commit messages should explain *why*, not just *what*. Reference the
+Commit messages should explain _why_, not just _what_. Reference the
 issue a commit addresses (`fixes #3`, `refs #3`).
 
 ### Creating the pull request
@@ -75,7 +75,7 @@ Prefix the PR title with the area it touches:
 Example: `ui: add a Sell action to the classic market trade card`
 
 The PR description should explain what the patch does and, more
-importantly, *why* — what problem it fixes, and how you tested it (which
+importantly, _why_ — what problem it fixes, and how you tested it (which
 new/existing tests cover it, or what you clicked through manually against
 a live/local backend). If there's reasonable doubt that you understand
 your own change or tested it at a basic level, expect the PR to be closed

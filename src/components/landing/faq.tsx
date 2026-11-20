@@ -6,7 +6,7 @@ const QUESTIONS = [
     a: 'Polaris is a prediction market — you take a position on a real-world price outcome, priced by supply and demand, not a house edge. That said, you can lose your full stake on the losing side, same as any market. Trade with money you can afford to lose.',
   },
   {
-    q: "What happens if the price oracle goes down?",
+    q: 'What happens if the price oracle goes down?',
     a: "Settlement never depends on any single party staying online. If a market can't be settled by its expiry, anyone can permissionlessly trigger a full refund after a grace period — funds are never stuck waiting on us.",
   },
   {
@@ -38,7 +38,14 @@ export function Faq() {
                 viewBox="0 0 20 20"
                 className="h-5 w-5 flex-none text-[var(--faint)] transition-transform duration-200 group-open:rotate-180"
               >
-                <path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="m5 7.5 5 5 5-5" />
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m5 7.5 5 5 5-5"
+                />
               </svg>
             </summary>
             <p className="mt-3 max-w-2xl leading-relaxed text-[var(--ink-soft)]">{item.a}</p>

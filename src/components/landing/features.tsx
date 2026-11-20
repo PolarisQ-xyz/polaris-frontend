@@ -12,27 +12,64 @@ const FEATURES: { title: string; body: string; icon: React.ReactNode }[] = [
   {
     title: 'Live AMM pricing',
     body: 'Odds move with every trade, and you can exit a position before expiry — not just hold to resolution.',
-    icon: <path d="M3 17l6-6 4 4 8-8M21 7v6h-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />,
+    icon: (
+      <path
+        d="M3 17l6-6 4 4 8-8M21 7v6h-6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    ),
   },
   {
     title: 'Fully collateralized',
     body: 'Every position is backed 1:1 by locked collateral. There’s no “empty pool” scenario — winners are always paid in full.',
-    icon: <path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3Zm-1.2 13.3-3-3 1.4-1.4 1.6 1.6 4.6-4.6 1.4 1.4-6 6Z" />,
+    icon: (
+      <path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3Zm-1.2 13.3-3-3 1.4-1.4 1.6 1.6 4.6-4.6 1.4 1.4-6 6Z" />
+    ),
   },
   {
     title: 'Fees that shrink with volume',
     body: 'A cost-driven fee curve, not a static number — fees compress automatically as a market gets more active.',
-    icon: <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />,
+    icon: (
+      <path
+        d="M4 20V10M10 20V4M16 20v-7M22 20H2"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    ),
   },
   {
     title: 'Embeddable anywhere',
     body: 'Drop a live market into any site with one iframe — the same wallet connection works everywhere it’s embedded.',
-    icon: <path d="M8 4 3 12l5 8M16 4l5 8-5 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />,
+    icon: (
+      <path
+        d="M8 4 3 12l5 8M16 4l5 8-5 8"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    ),
   },
   {
     title: 'Permissionless safety net',
     body: 'If a market can’t settle, anyone can trigger a full refund after a grace period. Funds are never stuck waiting on one party.',
-    icon: <path d="M12 2a10 10 0 1 0 10 10M22 2v6h-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />,
+    icon: (
+      <path
+        d="M12 2a10 10 0 1 0 10 10M22 2v6h-6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    ),
   },
 ];
 

@@ -41,11 +41,10 @@ export function LandingFooter() {
         </div>
 
         <p className="mt-10 max-w-3xl border-t border-[var(--line)] pt-6 text-xs leading-relaxed text-[var(--faint)]">
-          Polaris is experimental software on Stellar testnet. Prediction market positions can
-          lose value, including your full stake. Nothing here is financial advice, and Polaris may
-          not be available or appropriate in every jurisdiction — check your local regulations
-          before trading. This placeholder disclaimer needs a real legal review before any
-          production launch.
+          Polaris is experimental software on Stellar testnet. Prediction market positions can lose value,
+          including your full stake. Nothing here is financial advice, and Polaris may not be available or
+          appropriate in every jurisdiction — check your local regulations before trading. This placeholder
+          disclaimer needs a real legal review before any production launch.
         </p>
 
         <p className="mt-6 text-xs text-[var(--faint)]">© {new Date().getFullYear()} Polaris.</p>

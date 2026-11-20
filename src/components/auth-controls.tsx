@@ -75,7 +75,9 @@ export function AuthControls({ compact = false }: { compact?: boolean }) {
     return (
       <div className="flex items-center gap-2">
         {balance && (
-          <span className="text-xs font-mono text-[var(--muted)]">{stroopsToXlm(balance.balanceStroops)} XLM</span>
+          <span className="text-xs font-mono text-[var(--muted)]">
+            {stroopsToXlm(balance.balanceStroops)} XLM
+          </span>
         )}
         <span className="rounded-full bg-[var(--surface-2)] px-3 py-1.5 text-xs font-mono">
           {shortAddress(wallet.address)}
@@ -159,12 +161,7 @@ export function AuthControls({ compact = false }: { compact?: boolean }) {
           </Button>
         </div>
         {freighterAvailable === false ? (
-          <a
-            href="https://freighter.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClass}
-          >
+          <a href="https://freighter.app" target="_blank" rel="noopener noreferrer" className={linkClass}>
             Don&rsquo;t have Freighter? Install it →
           </a>
         ) : (
@@ -183,7 +180,9 @@ export function AuthControls({ compact = false }: { compact?: boolean }) {
         onClick={() => void connectWallet()}
         className={firstTimeIntent ? 'animate-pulse ring-2 ring-[var(--accent)] ring-offset-2' : undefined}
       >
-        {compact ? 'Connect Wallet' : (
+        {compact ? (
+          'Connect Wallet'
+        ) : (
           <>
             <span className="sm:hidden">Connect</span>
             <span className="hidden sm:inline">Connect Wallet</span>

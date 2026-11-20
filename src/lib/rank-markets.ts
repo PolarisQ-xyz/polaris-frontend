@@ -9,7 +9,5 @@ import type { WatchedMarket } from './api';
  * only ever features something a visitor can actually trade.
  */
 export function rankMarkets(markets: WatchedMarket[]): WatchedMarket[] {
-  return markets
-    .filter((m) => m.status === 'watching')
-    .sort((a, b) => a.expiry - b.expiry);
+  return markets.filter((m) => m.status === 'watching').sort((a, b) => a.expiry - b.expiry);
 }

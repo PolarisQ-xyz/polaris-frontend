@@ -202,7 +202,10 @@ export const api = {
   requestEmailCode: (email: string) =>
     request<{ sent: boolean }>('/auth/email/request', { method: 'POST', body: JSON.stringify({ email }) }),
   verifyEmailCode: (email: string, code: string) =>
-    request<{ address: string }>('/auth/email/verify', { method: 'POST', body: JSON.stringify({ email, code }) }),
+    request<{ address: string }>('/auth/email/verify', {
+      method: 'POST',
+      body: JSON.stringify({ email, code }),
+    }),
   getEmailSession: () => request<{ email: string; address: string }>('/auth/email/me'),
   emailLogout: () => request<{ ok: boolean }>('/auth/email/logout', { method: 'POST' }),
   emailTrade: (params: {
@@ -231,7 +234,10 @@ export const api = {
       body: JSON.stringify(body),
     }),
   triggerTerminate: (adminKey: string, id: string) =>
-    request<WatchedPerpetual>(`/perpetuals/${id}/terminate`, { method: 'POST', headers: { 'x-admin-key': adminKey } }),
+    request<WatchedPerpetual>(`/perpetuals/${id}/terminate`, {
+      method: 'POST',
+      headers: { 'x-admin-key': adminKey },
+    }),
   /** Admin-triggered, not scheduled — see `polaris-oracle/README.md`'s "Perpetual markets". Only meaningful for a perpetual whose `price_oracle` bundle is actually configured (`MOCK_REDSTONE_CONTRACT` set on the backend); otherwise the backend itself returns a clear error. */
   triggerCheckpoint: (adminKey: string, id: string) =>
     request<OnChainPerpetual & { txHash: string }>(`/perpetuals/${id}/checkpoint`, {

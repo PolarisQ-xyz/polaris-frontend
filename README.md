@@ -12,11 +12,11 @@ direct Soroban RPC or wallet-extension SDK in this app at all.
 
 This is one of three repos that make up Polaris:
 
-| Repo | Role |
-|---|---|
-| [polaris-contracts](https://github.com/PolarisQ-xyz/polaris-contracts) | The on-chain rules: markets, perpetuals, the LP vault, passkey wallets |
-| [polaris-oracle](https://github.com/PolarisQ-xyz/polaris-oracle) | NestJS backend — settlement automation, multi-oracle price relay, sponsored transactions, admin API |
-| **polaris-frontend** (this repo) | The web app — this document |
+| Repo                                                                   | Role                                                                                                |
+| ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| [polaris-contracts](https://github.com/PolarisQ-xyz/polaris-contracts) | The on-chain rules: markets, perpetuals, the LP vault, passkey wallets                              |
+| [polaris-oracle](https://github.com/PolarisQ-xyz/polaris-oracle)       | NestJS backend — settlement automation, multi-oracle price relay, sponsored transactions, admin API |
+| **polaris-frontend** (this repo)                                       | The web app — this document                                                                         |
 
 ## Live
 
@@ -61,14 +61,14 @@ This is one of three repos that make up Polaris:
 
 ## Tech stack
 
-| | |
-|---|---|
-| Framework | [Next.js](https://nextjs.org) 16 (Turbopack), App Router |
-| UI | React 19, Tailwind CSS 4 |
-| Data fetching | [TanStack Query](https://tanstack.com/query) |
-| Auth | WebAuthn (native browser API) via `lib/webauthn.ts` |
-| Testing | [Vitest](https://vitest.dev) — `amm.spec.ts`, `portfolio.spec.ts`, `webauthn.spec.ts` |
-| Deployment | [Vercel](https://vercel.com) |
+|               |                                                                                       |
+| ------------- | ------------------------------------------------------------------------------------- |
+| Framework     | [Next.js](https://nextjs.org) 16 (Turbopack), App Router                              |
+| UI            | React 19, Tailwind CSS 4                                                              |
+| Data fetching | [TanStack Query](https://tanstack.com/query)                                          |
+| Auth          | WebAuthn (native browser API) via `lib/webauthn.ts`                                   |
+| Testing       | [Vitest](https://vitest.dev) — `amm.spec.ts`, `portfolio.spec.ts`, `webauthn.spec.ts` |
+| Deployment    | [Vercel](https://vercel.com)                                                          |
 
 ## Architecture
 
@@ -95,39 +95,39 @@ Freighter to play.
 
 ## Project layout
 
-| Path | Purpose |
-|---|---|
-| `lib/webauthn.ts` | Passkey register/sign. The one piece of real crypto math here: browsers return DER-encoded, non-normalized ECDSA signatures; the contract needs raw r‖s, low-S normalized. Verified in `webauthn.spec.ts` (real keypairs, real signatures, no browser needed). |
-| `lib/passkey-wallet.ts` | Orchestrates onboarding (register passkey → backend deploys a smart wallet) and the two-step sponsored-transaction flow (prepare → sign → submit). |
-| `lib/portfolio.ts` | Mirrors the contract's redemption math for position values. Verified in `portfolio.spec.ts`. |
-| `lib/amm.ts` | Mirrors the contract's constant-product swap math, to give `buy` a real slippage floor. Verified in `amm.spec.ts`. |
-| `lib/api.ts` | Typed client for every `polaris-oracle` endpoint this app uses. |
-| `lib/format.ts` | Centralizes amount/status/address formatting and resolution-polling helpers. |
-| `app/(app)/*` | Dashboard, market/perpetual detail + trade form, portfolio — share the topbar shell. |
-| `app/docs/` | Public docs page, outside the `(app)` route group. |
-| `app/embed/[id]/` | The embeddable market widget. |
-| `app/admin/*` | The admin dashboard — its own top-level route group with its own sidebar shell. |
-| `components/perpetual-trade-card.tsx` | The perpetual contract's own trade widget — a separate component from `trade-card.tsx`, not a `kind`-parameterized shared one (the trading *model* differs enough to matter for UI, not just data). |
-| `components/embed-code-button.tsx` | Generates the `<iframe>` snippet shown on the market detail page. |
-| `components/result-reveal.tsx` | The one deliberate "moment" in this app — see [Design notes](#design-notes). |
+| Path                                  | Purpose                                                                                                                                                                                                                                                        |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lib/webauthn.ts`                     | Passkey register/sign. The one piece of real crypto math here: browsers return DER-encoded, non-normalized ECDSA signatures; the contract needs raw r‖s, low-S normalized. Verified in `webauthn.spec.ts` (real keypairs, real signatures, no browser needed). |
+| `lib/passkey-wallet.ts`               | Orchestrates onboarding (register passkey → backend deploys a smart wallet) and the two-step sponsored-transaction flow (prepare → sign → submit).                                                                                                             |
+| `lib/portfolio.ts`                    | Mirrors the contract's redemption math for position values. Verified in `portfolio.spec.ts`.                                                                                                                                                                   |
+| `lib/amm.ts`                          | Mirrors the contract's constant-product swap math, to give `buy` a real slippage floor. Verified in `amm.spec.ts`.                                                                                                                                             |
+| `lib/api.ts`                          | Typed client for every `polaris-oracle` endpoint this app uses.                                                                                                                                                                                                |
+| `lib/format.ts`                       | Centralizes amount/status/address formatting and resolution-polling helpers.                                                                                                                                                                                   |
+| `app/(app)/*`                         | Dashboard, market/perpetual detail + trade form, portfolio — share the topbar shell.                                                                                                                                                                           |
+| `app/docs/`                           | Public docs page, outside the `(app)` route group.                                                                                                                                                                                                             |
+| `app/embed/[id]/`                     | The embeddable market widget.                                                                                                                                                                                                                                  |
+| `app/admin/*`                         | The admin dashboard — its own top-level route group with its own sidebar shell.                                                                                                                                                                                |
+| `components/perpetual-trade-card.tsx` | The perpetual contract's own trade widget — a separate component from `trade-card.tsx`, not a `kind`-parameterized shared one (the trading _model_ differs enough to matter for UI, not just data).                                                            |
+| `components/embed-code-button.tsx`    | Generates the `<iframe>` snippet shown on the market detail page.                                                                                                                                                                                              |
+| `components/result-reveal.tsx`        | The one deliberate "moment" in this app — see [Design notes](#design-notes).                                                                                                                                                                                   |
 
 ## Routes
 
-| Route | Purpose |
-|---|---|
-| `/` | Landing / dashboard |
-| `/markets` | Classic market list |
-| `/market/[id]` | Classic market detail + trade |
-| `/perpetuals` | Perpetual market list |
-| `/perpetual/[id]` | Perpetual detail + trade |
-| `/bets` | Portfolio |
-| `/create` | Admin-gated market creation |
-| `/docs` | Public trust-model documentation |
-| `/embed/[id]` | Embeddable market widget (iframe target) |
-| `/welcome` | Onboarding |
-| `/admin` | Admin dashboard home |
-| `/admin/markets`, `/admin/perpetuals` | Lifecycle actions (settle, cancel, terminate, checkpoint) |
-| `/admin/fee-revenue`, `/admin/treasury`, `/admin/wallets`, `/admin/network`, `/admin/settlement-checks` | Read-only dashboard sections |
+| Route                                                                                                   | Purpose                                                   |
+| ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `/`                                                                                                     | Landing / dashboard                                       |
+| `/markets`                                                                                              | Classic market list                                       |
+| `/market/[id]`                                                                                          | Classic market detail + trade                             |
+| `/perpetuals`                                                                                           | Perpetual market list                                     |
+| `/perpetual/[id]`                                                                                       | Perpetual detail + trade                                  |
+| `/bets`                                                                                                 | Portfolio                                                 |
+| `/create`                                                                                               | Admin-gated market creation                               |
+| `/docs`                                                                                                 | Public trust-model documentation                          |
+| `/embed/[id]`                                                                                           | Embeddable market widget (iframe target)                  |
+| `/welcome`                                                                                              | Onboarding                                                |
+| `/admin`                                                                                                | Admin dashboard home                                      |
+| `/admin/markets`, `/admin/perpetuals`                                                                   | Lifecycle actions (settle, cancel, terminate, checkpoint) |
+| `/admin/fee-revenue`, `/admin/treasury`, `/admin/wallets`, `/admin/network`, `/admin/settlement-checks` | Read-only dashboard sections                              |
 
 ## Running locally
 
@@ -162,9 +162,9 @@ vercel --prod
 
 Two environment variables matter in production:
 
-| Variable | Purpose |
-|---|---|
-| `NEXT_PUBLIC_ORACLE_URL` | The `polaris-oracle` API this app talks to |
+| Variable                     | Purpose                                                                                                                                 |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_ORACLE_URL`     | The `polaris-oracle` API this app talks to                                                                                              |
 | `NEXT_PUBLIC_WEBAUTHN_RP_ID` | Must exactly match the deployed domain — WebAuthn's relying-party id is tied to it, and a mismatch silently breaks every passkey prompt |
 
 ## Design notes
@@ -178,16 +178,16 @@ Two things about it are load-bearing, not incidental:
 1. **It has to be served from this app's own origin, not `polaris-oracle`'s.**
    WebAuthn's relying-party id is tied to the document's origin a passkey
    was registered against. Same origin is what makes a passkey a
-   *portable* identity across every embed of this app.
+   _portable_ identity across every embed of this app.
 2. **The embedding page's `<iframe>` needs `allow="publickey-credentials-get
-   *; publickey-credentials-create *"`.** Without it, every passkey prompt
+*; publickey-credentials-create *"`.** Without it, every passkey prompt
    inside the iframe fails silently. `next.config.ts` sets the
    response-side `Permissions-Policy` header to match, but that's the
    other half of the handshake, not a substitute for the `allow` attribute.
 
 **Bundle size, measured rather than assumed:** loading `/embed/[id]` in a
 real browser transfers ~562kb (~524kb JS) total; `/market/[id]` is
-actually *larger* (~623kb/~559kb), mostly from Next's automatic
+actually _larger_ (~623kb/~559kb), mostly from Next's automatic
 prefetching of the nav's other routes.
 
 ### Making the blockchain invisible
@@ -240,7 +240,7 @@ Treasury), **Infrastructure** (Wallets, Blockchain, Fraud & Trust). Two
 structural decisions worth knowing if you're extending this:
 
 1. `/admin` lives in its own top-level `app/admin/*` route group, not
-   nested in `(app)` — a nested layout can only *add* to a parent's
+   nested in `(app)` — a nested layout can only _add_ to a parent's
    chrome, never replace it, and the dashboard needed a full-bleed shell
    with no public-site nav above it.
 2. `AdminKeyProvider` (scoped to `/admin/*`) gates the whole tree behind a
@@ -261,12 +261,12 @@ no resolution event. Its own route family (`/perpetuals`,
 existing markets pages with a type badge.
 
 **A new `PerpetualTradeCard`, not a `kind`-parameterized `TradeCard`.**
-The two contracts share `buy`'s exact mechanics, but the *trading model*
+The two contracts share `buy`'s exact mechanics, but the _trading model_
 differs in a way that matters for the UI: a classic market is "place a
 bet, wait for one resolution event," none of which a perpetual has (every
 complementary pair pays the same 0.5 XLM regardless of side once
 `terminate()` fires). `PerpetualTradeCard` reuses the low-level pieces
-that *are* generic (`OddsBar`, the AMM math helpers, `callAsWallet`, and
+that _are_ generic (`OddsBar`, the AMM math helpers, `callAsWallet`, and
 `redeemableValue`'s `'Cancelled'` case for `Terminated`'s identical math)
 rather than reimplementing any of them.
 
@@ -282,8 +282,8 @@ the backend's checkpoint endpoint and shows the result's price inline.
 
 ## Verified live: the real WebAuthn path
 
-Every other check of this flow verified either the *signature math*
-(`webauthn.spec.ts`) or the *deploy/trade plumbing* (email login, which
+Every other check of this flow verified either the _signature math_
+(`webauthn.spec.ts`) or the _deploy/trade plumbing_ (email login, which
 bypasses the browser ceremony entirely). Neither exercises
 `navigator.credentials.create()`/`.get()` themselves.
 
@@ -296,6 +296,7 @@ DER→raw-lowS conversion, the real backend relay, the real on-chain
 `__check_auth` verification.
 
 Result, clicking through the actual UI (sign in with passkey → buy YES):
+
 - A real wallet deployed and auto-funded on testnet through the factory
   (see `polaris-contracts`'s README, "Factory wasm pinning").
 - A real signed trade: `tx/prepare` → a genuine WebAuthn assertion from
@@ -320,7 +321,7 @@ could behave differently for.
   P&L — see `lib/portfolio.ts`'s doc comment and the `/docs` page for why.
 - Cross-origin `navigator.credentials.get()` (signing with an existing
   passkey, e.g. inside `/embed`) is broadly supported; cross-origin
-  `navigator.credentials.create()` (registering a *new* passkey) has
+  `navigator.credentials.create()` (registering a _new_ passkey) has
   narrower support and notably isn't supported in Safari as of this
   writing. Signing in on the flagship app first, then returning to the
   embed to trade, works around it.

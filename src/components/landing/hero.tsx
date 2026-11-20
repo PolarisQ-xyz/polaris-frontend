@@ -26,15 +26,18 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-[var(--ink-soft)]">
-            Polaris is a fully-collateralized prediction market, settled automatically by a
-            live price feed. Connect Freighter and sign every trade yourself — no custodial
-            account — and trade live, AMM-priced odds instead of locking in a static bet.
+            Polaris is a fully-collateralized prediction market, settled automatically by a live price feed.
+            Connect Freighter and sign every trade yourself — no custodial account — and trade live,
+            AMM-priced odds instead of locking in a static bet.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <Link
               href="/?new=1"
-              className={cn(buttonVariants({ variant: 'primary', size: 'lg' }), 'shadow-lg shadow-[#5b4fe033]')}
+              className={cn(
+                buttonVariants({ variant: 'primary', size: 'lg' }),
+                'shadow-lg shadow-[#5b4fe033]',
+              )}
             >
               Connect wallet
             </Link>
@@ -64,9 +67,7 @@ export function Hero() {
                 </span>
               </div>
 
-              <h2 className="text-lg font-semibold leading-snug">
-                Will XLM be ≥ $0.65 by Friday?
-              </h2>
+              <h2 className="text-lg font-semibold leading-snug">Will XLM be ≥ $0.65 by Friday?</h2>
 
               <OddsBar yesBps={6400} noBps={3600} />
 

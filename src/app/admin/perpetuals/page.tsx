@@ -68,7 +68,9 @@ export default function AdminPerpetualsPage() {
               <div>
                 <div className="font-mono text-xs text-[var(--faint)]">{shortAddress(p.contractId)}</div>
                 <div className="text-sm font-semibold">XLM/USD perpetual</div>
-                {p.lastError && <div className="mt-1 text-xs text-[var(--no)] max-w-md break-all">{p.lastError}</div>}
+                {p.lastError && (
+                  <div className="mt-1 text-xs text-[var(--no)] max-w-md break-all">{p.lastError}</div>
+                )}
                 {lastCheckpoint[p.contractId] && (
                   <div className="mt-1 text-xs text-[var(--muted)]">
                     Last checkpoint: {lastCheckpoint[p.contractId]}

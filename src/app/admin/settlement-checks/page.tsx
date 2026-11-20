@@ -22,8 +22,8 @@ export default function AdminSettlementChecksPage() {
     <div>
       <h1 className="mb-2 text-2xl font-bold">Fraud &amp; Trust</h1>
       <p className="mb-6 text-sm text-[var(--muted)]">
-        Every Lazer-vs-Reflector/Hermes settlement cross-check this backend has run, whichever way it came out —
-        not just the failures.
+        Every Lazer-vs-Reflector/Hermes settlement cross-check this backend has run, whichever way it came out
+        — not just the failures.
       </p>
 
       {isLoading ? (
@@ -33,10 +33,10 @@ export default function AdminSettlementChecksPage() {
           <CardBody>
             <p className="text-sm font-semibold">No checks recorded — this is expected here, not a bug.</p>
             <p className="mt-2 text-sm text-[var(--muted)]">
-              The cross-check only runs inside a real settlement attempt, which itself only runs when a live price
-              oracle is configured and available. Without one, every market falls straight through to the
-              permissionless <code className="text-xs">cancel()</code> path instead, and this table stays empty by
-              design — the same honest limit already documented for the cross-check itself.
+              The cross-check only runs inside a real settlement attempt, which itself only runs when a live
+              price oracle is configured and available. Without one, every market falls straight through to
+              the permissionless <code className="text-xs">cancel()</code> path instead, and this table stays
+              empty by design — the same honest limit already documented for the cross-check itself.
             </p>
           </CardBody>
         </Card>
@@ -56,7 +56,9 @@ function CheckRow({ check }: { check: SettlementCheck }) {
     <Card>
       <CardBody className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <div className="font-mono text-xs text-[var(--faint)]">{shortAddress(check.market_contract_id)}</div>
+          <div className="font-mono text-xs text-[var(--faint)]">
+            {shortAddress(check.market_contract_id)}
+          </div>
           <div className="text-xs text-[var(--faint)]">{formatDateTime(check.created_at)}</div>
           {check.reason && <div className="mt-1 text-xs text-[var(--muted)]">{check.reason}</div>}
           {check.lazer_price_cents && check.hermes_price_cents && (
