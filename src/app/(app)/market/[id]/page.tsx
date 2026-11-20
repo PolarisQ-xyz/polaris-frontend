@@ -10,6 +10,7 @@ import { OddsBar } from '@/components/odds-bar';
 import { EmbedCodeButton } from '@/components/embed-code-button';
 import { TradeCard } from '@/components/trade-card';
 import { centsToUsd, formatCountdown, statusLabel, stroopsToXlm, isPollableStatus, RESOLUTION_POLL_MS } from '@/lib/format';
+import { qk } from '@/lib/query-keys';
 
 export default function MarketDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -19,23 +20,23 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
   const rolloverFrom = useSearchParams().get('rolloverFrom') ?? undefined;
 
   const { data: market } = useQuery({
-    queryKey: ['market', id],
+    queryKey: qk.market.detail(id),
     queryFn: () => api.getMarket(id),
     refetchInterval: (query) => (isPollableStatus(query.state.data?.status) ? RESOLUTION_POLL_MS : false),
   });
   const { data: price } = useQuery({
-    queryKey: ['price', id],
+    queryKey: qk.market.price(id),
     queryFn: () => api.getPrice(id),
     refetchInterval: 15_000,
     enabled: market?.status === 'watching',
   });
   const { data: state } = useQuery({
-    queryKey: ['state', id],
+    queryKey: qk.market.state(id),
     queryFn: () => api.getMarketState(id),
     refetchInterval: isPollableStatus(market?.status) ? RESOLUTION_POLL_MS : false,
   });
   const { data: fee } = useQuery({
-    queryKey: ['fee', id],
+    queryKey: qk.market.fee(id),
     queryFn: () => api.getFee(id),
     enabled: market?.status === 'watching',
     refetchInterval: 15_000,

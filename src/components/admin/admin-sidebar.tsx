@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/cn';
+import { LogoMark } from '@/components/logo-mark';
 
 interface NavItem {
   href: string;
@@ -45,12 +46,7 @@ export function AdminSidebar() {
   return (
     <nav className="w-56 shrink-0 space-y-6 border-r border-[var(--line)] px-4 py-6">
       <Link href="/" className="flex items-center gap-2 px-2 font-bold">
-        <span
-          className="flex h-7 w-7 items-center justify-center rounded-lg text-white text-sm"
-          style={{ background: 'linear-gradient(135deg, #5b4fe0, #8b7bff)' }}
-        >
-          ◈
-        </span>
+        <LogoMark size="sm" />
         Polaris Admin
       </Link>
       {NAV_GROUPS.map((group) => (

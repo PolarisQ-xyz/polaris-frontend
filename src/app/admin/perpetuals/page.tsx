@@ -8,6 +8,7 @@ import { Card, CardBody } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { shortAddress, statusLabel, centsToUsd } from '@/lib/format';
+import { qk } from '@/lib/query-keys';
 
 /**
  * `polaris-perpetual`'s admin table — a separate page from `/admin/markets`
@@ -26,14 +27,14 @@ export default function AdminPerpetualsPage() {
   const [error, setError] = useState<string | null>(null);
   const [lastCheckpoint, setLastCheckpoint] = useState<Record<string, string>>({});
 
-  const { data: perpetuals } = useQuery({ queryKey: ['perpetuals'], queryFn: api.listPerpetuals });
+  const { data: perpetuals } = useQuery({ queryKey: qk.perpetuals.list(), queryFn: api.listPerpetuals });
 
   async function terminate(contractId: string) {
     setBusyId(contractId);
     setError(null);
     try {
       await api.triggerTerminate(adminKey, contractId);
-      await queryClient.invalidateQueries({ queryKey: ['perpetuals'] });
+      await queryClient.invalidateQueries({ queryKey: qk.perpetuals.list() });
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -47,7 +48,7 @@ export default function AdminPerpetualsPage() {
     try {
       const result = await api.triggerCheckpoint(adminKey, contractId);
       setLastCheckpoint((prev) => ({ ...prev, [contractId]: centsToUsd(result.lastPriceCents) }));
-      await queryClient.invalidateQueries({ queryKey: ['perpetualState', contractId] });
+      await queryClient.invalidateQueries({ queryKey: qk.perpetual.state(contractId) });
     } catch (err) {
       setError((err as Error).message);
     } finally {

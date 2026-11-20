@@ -7,14 +7,15 @@ import { Card, CardBody } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { OddsBar } from '@/components/odds-bar';
 import { statusLabel } from '@/lib/format';
+import { qk } from '@/lib/query-keys';
 
 function PerpetualCard({ contractId }: { contractId: string }) {
   const { data: perpetual } = useQuery({
-    queryKey: ['perpetual', contractId],
+    queryKey: qk.perpetual.detail(contractId),
     queryFn: () => api.getPerpetual(contractId),
   });
   const { data: price } = useQuery({
-    queryKey: ['perpetualPrice', contractId],
+    queryKey: qk.perpetual.price(contractId),
     queryFn: () => api.getPerpetualPrice(contractId),
     enabled: perpetual?.status === 'watching',
     refetchInterval: 15_000,
@@ -56,7 +57,7 @@ function PerpetualCard({ contractId }: { contractId: string }) {
  */
 export default function AllPerpetualsPage() {
   const { data: perpetuals, isLoading, error } = useQuery({
-    queryKey: ['perpetuals'],
+    queryKey: qk.perpetuals.list(),
     queryFn: api.listPerpetuals,
     refetchInterval: 30_000,
   });

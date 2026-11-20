@@ -6,11 +6,12 @@ import { useAdminKey } from '@/lib/admin-key-provider';
 import { Card, CardBody } from '@/components/ui/card';
 import { BarList } from '@/components/admin/bar-list';
 import { stroopsToXlm, shortAddress } from '@/lib/format';
+import { qk } from '@/lib/query-keys';
 
 export default function AdminFeeRevenuePage() {
   const { adminKey } = useAdminKey();
   const { data, isLoading } = useQuery({
-    queryKey: ['admin', 'fee-revenue', adminKey],
+    queryKey: qk.admin.feeRevenue(adminKey),
     queryFn: () => api.getAdminFeeRevenue(adminKey),
     refetchInterval: 30_000,
   });

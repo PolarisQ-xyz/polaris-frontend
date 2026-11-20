@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { api, type WatchedMarket } from './api';
 import { RESOLUTION_POLL_MS } from './format';
+import { qk } from '@/lib/query-keys';
 
 /**
  * Once a market resolves, finds its auto-rolled successor if one has been
@@ -14,7 +15,7 @@ import { RESOLUTION_POLL_MS } from './format';
 export function useNextRound(market: WatchedMarket | undefined): WatchedMarket | undefined {
   const isOpen = market?.status === 'watching';
   const { data: feedMarkets } = useQuery({
-    queryKey: ['feed-markets', market?.feedId],
+    queryKey: qk.markets.byFeed(market?.feedId),
     queryFn: () => api.listMarketsForFeed(market!.feedId),
     enabled: !!market && !isOpen,
     refetchInterval: (query) => {

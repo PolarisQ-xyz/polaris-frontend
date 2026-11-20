@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { stroopsToXlm, xlmToStroops, shortAddress } from '@/lib/format';
 import { redeemableValue } from '@/lib/portfolio';
 import { estimateBuyOut, withSlippageTolerance } from '@/lib/amm';
+import { invalidateAfterTrade, qk } from '@/lib/query-keys';
 
 /** Same floor as `TradeCard` — see its doc comment. */
 const SLIPPAGE_TOLERANCE_BPS = 200;
@@ -49,11 +50,11 @@ export function PerpetualTradeCard({
   const [txError, setTxError] = useState<string | null>(null);
 
   const { data: perpetual } = useQuery({
-    queryKey: ['perpetual', perpetualId],
+    queryKey: qk.perpetual.detail(perpetualId),
     queryFn: () => api.getPerpetual(perpetualId),
   });
   const { data: state } = useQuery({
-    queryKey: ['perpetualState', perpetualId],
+    queryKey: qk.perpetual.state(perpetualId),
     queryFn: () => api.getPerpetualState(perpetualId),
     // No settle-style resolution event to poll toward — only worth
     // refreshing while a `terminate` might land, same cadence as price/fee
@@ -61,13 +62,13 @@ export function PerpetualTradeCard({
     refetchInterval: perpetual?.status === 'watching' ? 15_000 : false,
   });
   const { data: fee } = useQuery({
-    queryKey: ['perpetualFee', perpetualId],
+    queryKey: qk.perpetual.fee(perpetualId),
     queryFn: () => api.getPerpetualFee(perpetualId),
     enabled: perpetual?.status === 'watching',
     refetchInterval: 15_000,
   });
   const { data: position } = useQuery({
-    queryKey: ['perpetualPosition', perpetualId, wallet?.address],
+    queryKey: qk.perpetual.position(perpetualId, wallet?.address),
     queryFn: () => api.getPerpetualPosition(perpetualId, wallet!.address),
     enabled: !!wallet,
   });
@@ -120,10 +121,7 @@ export function PerpetualTradeCard({
         'perpetual',
       );
       setTxResult(txHash);
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['perpetualPosition', perpetualId, activeWallet.address] }),
-        queryClient.invalidateQueries({ queryKey: ['perpetualPrice', perpetualId] }),
-      ]);
+      await invalidateAfterTrade(queryClient, { kind: 'perpetual', id: perpetualId, address: activeWallet.address });
     } catch (err) {
       setTxError(messageFromApiError(err));
     } finally {
@@ -139,7 +137,7 @@ export function PerpetualTradeCard({
     try {
       const { txHash } = await callAsWallet(wallet, perpetualId, 'redeem', {}, 'perpetual');
       setTxResult(txHash);
-      await queryClient.invalidateQueries({ queryKey: ['perpetualPosition', perpetualId, wallet.address] });
+      await invalidateAfterTrade(queryClient, { kind: 'perpetual', id: perpetualId, address: wallet.address });
     } catch (err) {
       setTxError(messageFromApiError(err));
     } finally {

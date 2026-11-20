@@ -13,6 +13,8 @@
   --accent: #5b4fe0;
   --accent-ink: #5b4fe0;
   --accent-soft: #ece9ff;
+  --accent-2: #8b7bff;
+  --brand-gradient: linear-gradient(135deg, var(--accent), var(--accent-2));
   --yes: #0f9d63;
   --yes-soft: #e3f8ee;
   --no: #d5405b;
@@ -35,6 +37,7 @@
     --accent: #9385ff;
     --accent-ink: #a99dff;
     --accent-soft: #211d3a;
+    --accent-2: #b8adff;
     --yes: #3ecf8e;
     --yes-soft: #113127;
     --no: #f2687f;

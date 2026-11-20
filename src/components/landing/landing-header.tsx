@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { buttonVariants } from '@/components/ui/button-variants';
 import { cn } from '@/lib/cn';
+import { LogoMark } from '@/components/logo-mark';
 
 const NAV_LINKS = [
   { href: '#how-it-works', label: 'How it works' },
@@ -33,13 +34,7 @@ export function LandingHeader() {
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
         <Link href="/welcome" className="flex items-center gap-2 text-lg font-bold">
-          <span
-            aria-hidden
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-white"
-            style={{ background: 'linear-gradient(135deg, #5b4fe0, #8b7bff)' }}
-          >
-            ◈
-          </span>
+          <LogoMark size="md" />
           Polaris
         </Link>
 

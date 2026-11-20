@@ -8,6 +8,7 @@ import { Card, CardBody } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { centsToUsd, shortAddress } from '@/lib/format';
+import { qk } from '@/lib/query-keys';
 
 /** Relocated from `(app)/admin/page.tsx` verbatim (minus the admin-key input, now handled once by `admin/layout.tsx`'s gate) as part of the dashboard rebuild — see the other `admin/*` pages for what's actually new. */
 export default function AdminMarketsPage() {
@@ -16,7 +17,7 @@ export default function AdminMarketsPage() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const { data: markets } = useQuery({ queryKey: ['markets'], queryFn: api.listMarkets });
+  const { data: markets } = useQuery({ queryKey: qk.markets.list(), queryFn: api.listMarkets });
 
   async function act(action: 'settle' | 'cancel', contractId: string) {
     setBusyId(contractId);
@@ -24,7 +25,7 @@ export default function AdminMarketsPage() {
     try {
       if (action === 'settle') await api.triggerSettle(adminKey, contractId);
       else await api.triggerCancel(adminKey, contractId);
-      await queryClient.invalidateQueries({ queryKey: ['markets'] });
+      await queryClient.invalidateQueries({ queryKey: qk.markets.list() });
     } catch (err) {
       setError((err as Error).message);
     } finally {

@@ -7,13 +7,14 @@ import { Card, CardBody } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { formatDateTime, shortAddress } from '@/lib/format';
 import type { SettlementCheck } from '@/lib/api';
+import { qk } from '@/lib/query-keys';
 
 const OUTCOME_TONE = { ok: 'yes', skipped: 'neutral', failed: 'no' } as const;
 
 export default function AdminSettlementChecksPage() {
   const { adminKey } = useAdminKey();
   const { data, isLoading } = useQuery({
-    queryKey: ['admin', 'settlement-checks', adminKey],
+    queryKey: qk.admin.settlementChecks(adminKey),
     queryFn: () => api.getAdminSettlementChecks(adminKey),
     refetchInterval: 30_000,
   });

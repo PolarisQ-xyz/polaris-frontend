@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { LogoMark } from '@/components/logo-mark';
 
 export function LandingFooter() {
   return (
@@ -7,13 +8,7 @@ export function LandingFooter() {
         <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
           <div className="max-w-sm">
             <Link href="/welcome" className="flex items-center gap-2 text-base font-bold">
-              <span
-                aria-hidden
-                className="flex h-7 w-7 items-center justify-center rounded-lg text-white text-sm"
-                style={{ background: 'linear-gradient(135deg, #5b4fe0, #8b7bff)' }}
-              >
-                ◈
-              </span>
+              <LogoMark size="sm" />
               Polaris
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">

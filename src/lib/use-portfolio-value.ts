@@ -2,6 +2,7 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import { api } from './api';
 import { useWallet } from './wallet-provider';
 import { markToMarket, redeemableValue, type MarketStatus } from './portfolio';
+import { qk } from '@/lib/query-keys';
 
 /**
  * Total value (in stroops) of every open or redeemable position the current
@@ -18,12 +19,12 @@ import { markToMarket, redeemableValue, type MarketStatus } from './portfolio';
  */
 export function usePortfolioValue(): { total: bigint; hasPosition: boolean } | null {
   const { wallet } = useWallet();
-  const { data: markets } = useQuery({ queryKey: ['markets'], queryFn: api.listMarkets, enabled: !!wallet });
-  const { data: perpetuals } = useQuery({ queryKey: ['perpetuals'], queryFn: api.listPerpetuals, enabled: !!wallet });
+  const { data: markets } = useQuery({ queryKey: qk.markets.list(), queryFn: api.listMarkets, enabled: !!wallet });
+  const { data: perpetuals } = useQuery({ queryKey: qk.perpetuals.list(), queryFn: api.listPerpetuals, enabled: !!wallet });
 
   const marketResults = useQueries({
     queries: (markets ?? []).map((m) => ({
-      queryKey: ['portfolio-row', m.contractId, wallet?.address],
+      queryKey: qk.portfolio.marketRow(m.contractId, wallet?.address),
       queryFn: async () => {
         const [state, position] = await Promise.all([
           api.getMarketState(m.contractId),
@@ -43,7 +44,7 @@ export function usePortfolioValue(): { total: bigint; hasPosition: boolean } | n
 
   const perpetualResults = useQueries({
     queries: (perpetuals ?? []).map((p) => ({
-      queryKey: ['portfolio-perpetual-row', p.contractId, wallet?.address],
+      queryKey: qk.portfolio.perpetualRow(p.contractId, wallet?.address),
       queryFn: async () => {
         const [state, position] = await Promise.all([
           api.getPerpetualState(p.contractId),

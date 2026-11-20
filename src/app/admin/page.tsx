@@ -6,6 +6,7 @@ import { useAdminKey } from '@/lib/admin-key-provider';
 import { Card, CardBody } from '@/components/ui/card';
 import { BarList } from '@/components/admin/bar-list';
 import { stroopsToXlm } from '@/lib/format';
+import { qk } from '@/lib/query-keys';
 
 function StatTile({ label, value }: { label: string; value: string }) {
   return (
@@ -21,7 +22,7 @@ function StatTile({ label, value }: { label: string; value: string }) {
 export default function AdminOverviewPage() {
   const { adminKey } = useAdminKey();
   const { data, isLoading } = useQuery({
-    queryKey: ['admin', 'overview', adminKey],
+    queryKey: qk.admin.overview(adminKey),
     queryFn: () => api.getAdminOverview(adminKey),
     refetchInterval: 30_000,
   });

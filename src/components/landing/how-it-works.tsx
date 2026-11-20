@@ -34,7 +34,7 @@ export function HowItWorks() {
               <span
                 aria-hidden
                 className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-full text-base font-bold text-white"
-                style={{ background: 'linear-gradient(135deg, #5b4fe0, #8b7bff)' }}
+                style={{ background: 'var(--brand-gradient)' }}
               >
                 {i + 1}
               </span>

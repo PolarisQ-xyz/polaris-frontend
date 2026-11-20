@@ -12,6 +12,7 @@ import { stroopsToXlm, xlmToStroops, shortAddress, isPollableStatus, RESOLUTION_
 import { redeemableValue, type MarketStatus } from '@/lib/portfolio';
 import { estimateBuyOut, withSlippageTolerance } from '@/lib/amm';
 import { useNextRound } from '@/lib/use-next-round';
+import { invalidateAfterTrade, qk } from '@/lib/query-keys';
 
 /** 2% — how much worse a fill is allowed to be than the quote at click-time before the trade reverts instead of silently eating the difference. */
 const SLIPPAGE_TOLERANCE_BPS = 200;
@@ -63,7 +64,7 @@ export function TradeCard({
   const [txError, setTxError] = useState<string | null>(null);
 
   const { data: market } = useQuery({
-    queryKey: ['market', marketId],
+    queryKey: qk.market.detail(marketId),
     queryFn: () => api.getMarket(marketId),
     // Keeps polling while a resolution could still land, so a bettor sitting
     // on this card sees it happen instead of only on next page load — see
@@ -71,30 +72,30 @@ export function TradeCard({
     refetchInterval: (query) => (isPollableStatus(query.state.data?.status) ? RESOLUTION_POLL_MS : false),
   });
   const { data: state } = useQuery({
-    queryKey: ['state', marketId],
+    queryKey: qk.market.state(marketId),
     queryFn: () => api.getMarketState(marketId),
     refetchInterval: isPollableStatus(market?.status) ? RESOLUTION_POLL_MS : false,
   });
   const { data: fee } = useQuery({
-    queryKey: ['fee', marketId],
+    queryKey: qk.market.fee(marketId),
     queryFn: () => api.getFee(marketId),
     enabled: market?.status === 'watching',
     refetchInterval: 15_000,
   });
   const { data: position } = useQuery({
-    queryKey: ['position', marketId, wallet?.address],
+    queryKey: qk.market.position(marketId, wallet?.address),
     queryFn: () => api.getPosition(marketId, wallet!.address),
     enabled: !!wallet,
   });
   const nextRound = useNextRound(market);
 
   const { data: rolloverState } = useQuery({
-    queryKey: ['state', rolloverFromMarketId],
+    queryKey: qk.market.state(rolloverFromMarketId),
     queryFn: () => api.getMarketState(rolloverFromMarketId!),
     enabled: !!rolloverFromMarketId,
   });
   const { data: rolloverPosition } = useQuery({
-    queryKey: ['position', rolloverFromMarketId, wallet?.address],
+    queryKey: qk.market.position(rolloverFromMarketId, wallet?.address),
     queryFn: () => api.getPosition(rolloverFromMarketId!, wallet!.address),
     enabled: !!rolloverFromMarketId && !!wallet,
   });
@@ -158,7 +159,7 @@ export function TradeCard({
     try {
       if (rolloverFromMarketId && rolloverAmount > 0n) {
         await callAsWallet(activeWallet, rolloverFromMarketId, 'redeem', {});
-        await queryClient.invalidateQueries({ queryKey: ['position', rolloverFromMarketId, activeWallet.address] });
+        await invalidateAfterTrade(queryClient, { kind: 'market', id: rolloverFromMarketId, address: activeWallet.address });
       }
 
       const stroops = xlmToStroops(amount);
@@ -170,10 +171,7 @@ export function TradeCard({
         min_shares_out: minSharesOut.toString(),
       });
       setTxResult(txHash);
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['position', marketId, activeWallet.address] }),
-        queryClient.invalidateQueries({ queryKey: ['price', marketId] }),
-      ]);
+      await invalidateAfterTrade(queryClient, { kind: 'market', id: marketId, address: activeWallet.address });
     } catch (err) {
       setTxError(messageFromApiError(err));
     } finally {
@@ -189,7 +187,7 @@ export function TradeCard({
     try {
       const { txHash } = await callAsWallet(wallet, marketId, 'redeem', {});
       setTxResult(txHash);
-      await queryClient.invalidateQueries({ queryKey: ['position', marketId, wallet.address] });
+      await invalidateAfterTrade(queryClient, { kind: 'market', id: marketId, address: wallet.address });
     } catch (err) {
       setTxError(messageFromApiError(err));
     } finally {

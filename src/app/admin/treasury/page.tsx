@@ -5,11 +5,12 @@ import { api } from '@/lib/api';
 import { useAdminKey } from '@/lib/admin-key-provider';
 import { Card, CardBody } from '@/components/ui/card';
 import { stroopsToXlm, shortAddress, formatDateTime } from '@/lib/format';
+import { qk } from '@/lib/query-keys';
 
 export default function AdminTreasuryPage() {
   const { adminKey } = useAdminKey();
   const { data, isLoading } = useQuery({
-    queryKey: ['admin', 'treasury', adminKey],
+    queryKey: qk.admin.treasury(adminKey),
     queryFn: () => api.getAdminTreasury(adminKey),
     refetchInterval: 30_000,
   });

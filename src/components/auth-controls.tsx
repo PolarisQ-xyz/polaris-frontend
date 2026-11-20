@@ -6,6 +6,7 @@ import { useWallet } from '@/lib/wallet-provider';
 import { Button } from '@/components/ui/button';
 import { api } from '@/lib/api';
 import { shortAddress, stroopsToXlm } from '@/lib/format';
+import { qk } from '@/lib/query-keys';
 
 /**
  * The full sign-in state machine — connect a Stellar wallet (Freighter) in
@@ -61,7 +62,7 @@ export function AuthControls({ compact = false }: { compact?: boolean }) {
   }, []);
 
   const { data: balance } = useQuery({
-    queryKey: ['walletBalance', wallet?.address],
+    queryKey: qk.wallet.balance(wallet?.address),
     queryFn: () => api.getBalance(wallet!.address),
     enabled: !!wallet,
     refetchInterval: 20_000,

@@ -8,18 +8,19 @@ import { Card, CardBody } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { centsToUsd, stroopsToXlm } from '@/lib/format';
 import { didWin, markToMarket, redeemableValue, type MarketStatus } from '@/lib/portfolio';
+import { qk } from '@/lib/query-keys';
 
 function PositionRow({ contractId }: { contractId: string }) {
   const { wallet } = useWallet();
-  const { data: market } = useQuery({ queryKey: ['market', contractId], queryFn: () => api.getMarket(contractId) });
-  const { data: state } = useQuery({ queryKey: ['state', contractId], queryFn: () => api.getMarketState(contractId) });
+  const { data: market } = useQuery({ queryKey: qk.market.detail(contractId), queryFn: () => api.getMarket(contractId) });
+  const { data: state } = useQuery({ queryKey: qk.market.state(contractId), queryFn: () => api.getMarketState(contractId) });
   const { data: position } = useQuery({
-    queryKey: ['position', contractId, wallet?.address],
+    queryKey: qk.market.position(contractId, wallet?.address),
     queryFn: () => api.getPosition(contractId, wallet!.address),
     enabled: !!wallet,
   });
   const { data: price } = useQuery({
-    queryKey: ['price', contractId],
+    queryKey: qk.market.price(contractId),
     queryFn: () => api.getPrice(contractId),
     enabled: state?.status === 'Open',
   });
@@ -71,20 +72,20 @@ function PositionRow({ contractId }: { contractId: string }) {
 function PerpetualPositionRow({ contractId }: { contractId: string }) {
   const { wallet } = useWallet();
   const { data: perpetual } = useQuery({
-    queryKey: ['perpetual', contractId],
+    queryKey: qk.perpetual.detail(contractId),
     queryFn: () => api.getPerpetual(contractId),
   });
   const { data: state } = useQuery({
-    queryKey: ['perpetualState', contractId],
+    queryKey: qk.perpetual.state(contractId),
     queryFn: () => api.getPerpetualState(contractId),
   });
   const { data: position } = useQuery({
-    queryKey: ['perpetualPosition', contractId, wallet?.address],
+    queryKey: qk.perpetual.position(contractId, wallet?.address),
     queryFn: () => api.getPerpetualPosition(contractId, wallet!.address),
     enabled: !!wallet,
   });
   const { data: price } = useQuery({
-    queryKey: ['perpetualPrice', contractId],
+    queryKey: qk.perpetual.price(contractId),
     queryFn: () => api.getPerpetualPrice(contractId),
     enabled: state?.status === 'Open',
   });
@@ -127,8 +128,8 @@ function PerpetualPositionRow({ contractId }: { contractId: string }) {
 
 export default function PortfolioPage() {
   const { wallet } = useWallet();
-  const { data: markets } = useQuery({ queryKey: ['markets'], queryFn: api.listMarkets });
-  const { data: perpetuals } = useQuery({ queryKey: ['perpetuals'], queryFn: api.listPerpetuals });
+  const { data: markets } = useQuery({ queryKey: qk.markets.list(), queryFn: api.listMarkets });
+  const { data: perpetuals } = useQuery({ queryKey: qk.perpetuals.list(), queryFn: api.listPerpetuals });
 
   if (!wallet) {
     return <p className="text-sm text-[var(--muted)]">Connect your wallet to see your positions.</p>;

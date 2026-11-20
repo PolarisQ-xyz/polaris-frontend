@@ -10,6 +10,7 @@ import { OddsBar } from '@/components/odds-bar';
 import { TradeCard } from '@/components/trade-card';
 import { centsToUsd, formatCountdown, statusLabel } from '@/lib/format';
 import { rankMarkets } from '@/lib/rank-markets';
+import { qk } from '@/lib/query-keys';
 
 /**
  * The primary landing experience: one open market, featured full-width,
@@ -20,7 +21,7 @@ import { rankMarkets } from '@/lib/rank-markets';
  */
 export default function HomePage() {
   const { data: markets, isLoading, error } = useQuery({
-    queryKey: ['markets'],
+    queryKey: qk.markets.list(),
     queryFn: api.listMarkets,
     refetchInterval: 30_000,
   });
@@ -30,7 +31,7 @@ export default function HomePage() {
   const featured = ranked.length > 0 ? ranked[featuredIndex % ranked.length] : null;
 
   const { data: price } = useQuery({
-    queryKey: ['price', featured?.contractId],
+    queryKey: qk.market.price(featured?.contractId),
     queryFn: () => api.getPrice(featured!.contractId),
     enabled: !!featured,
     refetchInterval: 15_000,

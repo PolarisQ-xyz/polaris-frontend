@@ -6,6 +6,7 @@ import { api } from '@/lib/api';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { centsToUsd, formatCountdown, statusLabel } from '@/lib/format';
+import { qk } from '@/lib/query-keys';
 
 function statusTone(status: string): 'yes' | 'no' | 'warn' | 'neutral' {
   if (status === 'settled') return 'yes';
@@ -42,11 +43,11 @@ function ChgCell({ yesBpsChange }: { yesBpsChange: number | null | undefined }) 
  */
 function MarketRow({ contractId }: { contractId: string }) {
   const { data: market } = useQuery({
-    queryKey: ['market', contractId],
+    queryKey: qk.market.detail(contractId),
     queryFn: () => api.getMarket(contractId),
   });
   const { data: price } = useQuery({
-    queryKey: ['price', contractId],
+    queryKey: qk.market.price(contractId),
     queryFn: () => api.getPrice(contractId),
     enabled: market?.status === 'watching',
     refetchInterval: 15_000,
@@ -65,7 +66,7 @@ function MarketRow({ contractId }: { contractId: string }) {
     >
       <span
         className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-        style={{ background: isOpen ? 'linear-gradient(135deg, #5b4fe0, #8b7bff)' : 'var(--faint)' }}
+        style={{ background: isOpen ? 'var(--brand-gradient)' : 'var(--faint)' }}
       >
         XL
       </span>
@@ -118,7 +119,7 @@ function MarketRow({ contractId }: { contractId: string }) {
  */
 export default function AllMarketsPage() {
   const { data: markets, isLoading, error } = useQuery({
-    queryKey: ['markets'],
+    queryKey: qk.markets.list(),
     queryFn: api.listMarkets,
     refetchInterval: 30_000,
   });
