@@ -13,13 +13,17 @@ export function EmbedCodeButton({ contractId }: { contractId: string }) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  if (typeof window === 'undefined') return null;
-  const origin = window.location.origin;
+  // Only read window once the panel is open (always post-hydration), so the
+  // server and first client render match.
+  const origin = open ? window.location.origin : '';
   const snippet = `<iframe
   src="${origin}/embed/${contractId}"
   width="360" height="420"
   style="border:0;border-radius:16px;overflow:hidden"
   title="Polaris market"
+  sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms"
+  referrerpolicy="strict-origin-when-cross-origin"
+  loading="lazy"
 ></iframe>`;
 
   return (
@@ -44,8 +48,16 @@ export function EmbedCodeButton({ contractId }: { contractId: string }) {
             {copied ? 'Copied' : 'Copy'}
           </Button>
           <p className="text-xs text-[var(--faint)]">
-            No special permissions needed — Freighter and the email fallback both work inside the
-            embed as-is.
+            Your site&apos;s CSP must allow this origin in <code>frame-src</code>. See the{' '}
+            <a
+              className="underline"
+              href="https://github.com/PolarisQ-xyz/polaris-frontend/blob/main/docs/EMBEDDING.md"
+              target="_blank"
+              rel="noreferrer"
+            >
+              embed integration guide
+            </a>{' '}
+            for sizing, sandboxing, and wallet behavior.
           </p>
         </div>
       )}

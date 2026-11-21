@@ -173,6 +173,8 @@ Two environment variables matter in production:
 
 Any market can run inside a third-party site via `/embed/[contractId]` — a
 "Get embed code" button on the market detail page generates the snippet.
+**Integrators: see [docs/EMBEDDING.md](docs/EMBEDDING.md)** for host CSP,
+sandbox attributes, sizing, and wallet/login behavior inside the iframe.
 Two things about it are load-bearing, not incidental:
 
 1. **It has to be served from this app's own origin, not `polaris-oracle`'s.**

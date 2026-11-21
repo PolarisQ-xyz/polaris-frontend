@@ -17,5 +17,16 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npx tsc --noEmit
-      - run: npm test
+      - run: npm run test:coverage
+      - name: Coverage summary
+        if: always()
+        run: |
+          node -e '
+          const t = require("./coverage/coverage-summary.json").total;
+          const row = (k) => `| ${k} | ${t[k].pct}% | ${t[k].covered}/${t[k].total} |`;
+          console.log(["### src/lib coverage", "", "| Metric | % | Covered |", "|---|---|---|",
+            ...["lines", "statements", "functions", "branches"].map(row)].join("\n"));
+          ' >> "$GITHUB_STEP_SUMMARY"
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
