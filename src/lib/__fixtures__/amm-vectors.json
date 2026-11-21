@@ -1,0 +1,2714 @@
+{
+ "_provenance": {
+  "source": "PolarisQ-xyz/polaris-contracts",
+  "commit": "ddf598e8406efc296e91777054d14fc5e9711e55",
+  "functions": "contracts/ctf-math/src/lib.rs: cpmm_out (L23-28), apply_fee (L68-71); market buy() swaps the unwanted side: cpmm_out(reserve_in, reserve_out, apply_fee(collateral_amount, fee_bps))",
+  "regenerate": "See src/lib/__fixtures__/README.md"
+ },
+ "vectors": [
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "2"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "2",
+   "poolNo": "3",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "5"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "5"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "5"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "5"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "5"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "5"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "10"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10",
+   "poolNo": "10",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "910"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "910"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "9991"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "9991"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "910"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "910"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "9991"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "9991"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "907"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "907"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "9990"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "9990"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "901"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "901"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "9990"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "9990"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "21"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "323"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "2728"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "9971"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "29971"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "323"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "2728"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "9971"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "29971"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "21"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "322"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "2720"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "9970"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "29970"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "320"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "2703"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "9970"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "29970"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000",
+   "poolNo": "30000",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "21"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "2728"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "323"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "29971"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "9971"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "21"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "2728"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "323"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "29971"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "9971"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "21"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "2720"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "322"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "29970"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "9970"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "21"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "3"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "2703"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "320"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "29970"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "9970"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "30000",
+   "poolNo": "10000",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "500000000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "875000000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "999001000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "999999901"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "500000000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "875000000"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "999001000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "999999900"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "500000000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "875000000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "998997996"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "999999900"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "500000000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "875000000"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "998990919"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "999999899"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "1000000000",
+   "poolNo": "1",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "1000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "1000"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "9999991"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "9999991"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "1000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "1000"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "9998991"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "9998991"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "997"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "997"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "9969991"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "9969991"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "990"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "990"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "9899991"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "9899991"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "10000000000000",
+   "poolNo": "10000000000000",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 0,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 0,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "1000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 0,
+   "amount": "1000",
+   "sharesOut": "1000"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "10000000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 0,
+   "amount": "10000000",
+   "sharesOut": "10000000"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 1,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 1,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "1000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 1,
+   "amount": "1000",
+   "sharesOut": "1000"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "9999000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 1,
+   "amount": "10000000",
+   "sharesOut": "9999000"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 30,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 30,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "997"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 30,
+   "amount": "1000",
+   "sharesOut": "997"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "9970000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 30,
+   "amount": "10000000",
+   "sharesOut": "9970000"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 100,
+   "amount": "1",
+   "sharesOut": "1"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 100,
+   "amount": "7",
+   "sharesOut": "7"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "990"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 100,
+   "amount": "1000",
+   "sharesOut": "990"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "9900000"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 100,
+   "amount": "10000000",
+   "sharesOut": "9900000"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 10000,
+   "amount": "1",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 10000,
+   "amount": "7",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 10000,
+   "amount": "1000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "Yes",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  },
+  {
+   "prediction": "No",
+   "poolYes": "170141183460469",
+   "poolNo": "170141183460469",
+   "feeBps": 10000,
+   "amount": "10000000",
+   "sharesOut": "0"
+  }
+ ]
+}

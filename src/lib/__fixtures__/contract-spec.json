@@ -1,0 +1,23 @@
+{
+  "_provenance": {
+    "source": "PolarisQ-xyz/polaris-contracts",
+    "commit": "ddf598e8406efc296e91777054d14fc5e9711e55",
+    "regenerate": "See src/lib/__fixtures__/README.md"
+  },
+  "market": {
+    "buy": [{ "name": "user", "type": "address" }, { "name": "prediction", "type": "Prediction" }, { "name": "collateral_amount", "type": "i128" }, { "name": "min_shares_out", "type": "i128" }],
+    "sell": [{ "name": "user", "type": "address" }, { "name": "prediction", "type": "Prediction" }, { "name": "shares_in", "type": "i128" }, { "name": "min_collateral_out", "type": "i128" }],
+    "split": [{ "name": "user", "type": "address" }, { "name": "amount", "type": "i128" }],
+    "merge": [{ "name": "user", "type": "address" }, { "name": "amount", "type": "i128" }],
+    "transfer": [{ "name": "from", "type": "address" }, { "name": "to", "type": "address" }, { "name": "prediction", "type": "Prediction" }, { "name": "amount", "type": "i128" }],
+    "redeem": [{ "name": "user", "type": "address" }]
+  },
+  "perpetual": {
+    "buy": [{ "name": "user", "type": "address" }, { "name": "prediction", "type": "Prediction" }, { "name": "collateral_amount", "type": "i128" }, { "name": "min_shares_out", "type": "i128" }],
+    "sell": [{ "name": "user", "type": "address" }, { "name": "prediction", "type": "Prediction" }, { "name": "shares_in", "type": "i128" }, { "name": "min_collateral_out", "type": "i128" }],
+    "split": [{ "name": "user", "type": "address" }, { "name": "amount", "type": "i128" }],
+    "merge": [{ "name": "user", "type": "address" }, { "name": "amount", "type": "i128" }],
+    "transfer": [{ "name": "from", "type": "address" }, { "name": "to", "type": "address" }, { "name": "prediction", "type": "Prediction" }, { "name": "amount", "type": "i128" }],
+    "redeem": [{ "name": "user", "type": "address" }]
+  }
+}

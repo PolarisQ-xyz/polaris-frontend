@@ -2,6 +2,7 @@ import { contract } from '@stellar/stellar-sdk';
 import Freighter from '@stellar/freighter-api';
 import { api } from './api';
 import { config } from './config';
+import { AUTH_ADDRESS_PARAM, I128_FIELDS, PREDICTION_FIELD, type TradeFunction } from './trade-args';
 
 /**
  * Two ways a user ends up with a usable Soroban address, sharing the same
@@ -107,36 +108,6 @@ function predictionScVal(tag: string): { tag: string; values: undefined } {
   return { tag, values: undefined };
 }
 
-/**
- * Which wire-arg key holds the i128 amount(s) for each sponsorable
- * function, and which key is the `Prediction` enum, if any — the frontend
- * equivalent of `wire-args.ts`'s per-function field knowledge, since the
- * browser builds and signs its own transaction now instead of asking the
- * backend to. Keep in sync with that file's `AUTH_ADDRESS_PARAM`/switch.
- */
-const I128_FIELDS: Record<string, string[]> = {
-  buy: ['collateral_amount', 'min_shares_out'],
-  sell: ['shares_in', 'min_collateral_out'],
-  split: ['amount'],
-  merge: ['amount'],
-  transfer: ['amount'],
-  redeem: [],
-};
-const PREDICTION_FIELD: Partial<Record<string, string>> = {
-  buy: 'prediction',
-  sell: 'prediction',
-  transfer: 'prediction',
-};
-const AUTH_ADDRESS_PARAM: Record<string, string> = {
-  buy: 'user',
-  sell: 'user',
-  split: 'user',
-  merge: 'user',
-  redeem: 'user',
-  transfer: 'from',
-};
-
-type TradeFunction = 'buy' | 'sell' | 'split' | 'merge' | 'transfer' | 'redeem';
 
 /** Minimal typed surface for the one generated-client call `callAsWallet` makes — see `polaris-oracle`'s `stellar.service.ts` for why the backend's own typed interfaces don't cover these (it never calls them directly; it only ever relayed a user's own signed call). */
 type TradeContract = Record<
