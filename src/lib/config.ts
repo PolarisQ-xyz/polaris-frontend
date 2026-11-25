@@ -50,6 +50,19 @@ export function networkNameFromPassphrase(passphrase: string): string {
   return NETWORK_NAMES[passphrase] ?? 'testnet';
 }
 
+// Human-readable display names for known passphrases, used in user-facing
+// messages (e.g. the Freighter wrong-network error). Falls back to the raw
+// passphrase for unknown values so the message never lies about the target.
+const NETWORK_DISPLAY_NAMES: Record<string, string> = {
+  'Public Global Stellar Network ; September 2015': 'Mainnet',
+  'Test SDF Network ; September 2015': 'Testnet',
+  'Test SDF Future Network ; October 2022': 'Futurenet',
+};
+
+export function networkDisplayNameFromPassphrase(passphrase: string): string {
+  return NETWORK_DISPLAY_NAMES[passphrase] ?? passphrase;
+}
+
 export function explorerTxUrl(hash: string): string {
   const network = networkNameFromPassphrase(config.stellarNetworkPassphrase);
   return `https://stellar.expert/explorer/${network}/tx/${hash}`;
