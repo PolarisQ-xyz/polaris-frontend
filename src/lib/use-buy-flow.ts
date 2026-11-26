@@ -7,6 +7,7 @@ import { useWallet } from '@/lib/wallet-provider';
 import { callAsWallet } from '@/lib/freighter-wallet';
 import { stroopsToXlm, xlmToStroops } from '@/lib/format';
 import { estimateBuyOut, withSlippageTolerance } from '@/lib/amm';
+import { qk } from '@/lib/query-keys';
 
 /** 2% — how much worse a fill is allowed to be than the quote at click-time before the trade reverts instead of silently eating the difference. */
 export const SLIPPAGE_TOLERANCE_BPS = 200;
@@ -102,8 +103,11 @@ export function useBuyFlow({
       });
       setTxResult(txHash);
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['position', contractId, activeWallet.address] }),
-        queryClient.invalidateQueries({ queryKey: ['price', contractId] }),
+        queryClient.invalidateQueries({ queryKey: qk.market.position(contractId, activeWallet.address) }),
+        queryClient.invalidateQueries({ queryKey: qk.market.price(contractId) }),
+        queryClient.invalidateQueries({ queryKey: qk.market.state(contractId) }),
+        queryClient.invalidateQueries({ queryKey: qk.wallet.balance(activeWallet.address) }),
+        queryClient.invalidateQueries({ queryKey: qk.portfolio.marketRow(contractId, activeWallet.address) }),
         ...invalidateKeys.map((queryKey) => queryClient.invalidateQueries({ queryKey })),
       ]);
       return txHash;

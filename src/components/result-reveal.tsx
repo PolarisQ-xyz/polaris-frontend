@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { didWin, redeemableValue, type MarketStatus, type Position } from '@/lib/portfolio';
-import { stroopsToXlm } from '@/lib/format';
+import { useFormatStroops } from '@/lib/display-currency';
 
 /**
  * The one deliberate "moment" in this app — what a bettor sees the instant
@@ -38,6 +38,7 @@ export function ResultReveal({
   nextRoundHref?: string;
   compact?: boolean;
 }) {
+  const formatStroops = useFormatStroops();
   const resolved = status !== 'Open';
 
   const tone = status === 'Cancelled' ? 'neutral' : didWin(status, position) ? 'won' : 'lost';
@@ -47,9 +48,9 @@ export function ResultReveal({
     tone === 'neutral' ? 'Market cancelled' : tone === 'won' ? 'You won' : "Didn't win this one";
   const detail =
     tone === 'neutral'
-      ? `Refunded ${stroopsToXlm(payout)} XLM`
+      ? `Refunded ${formatStroops(payout)}`
       : tone === 'won'
-        ? `+${stroopsToXlm(payout)} XLM`
+        ? `+${formatStroops(payout)}`
         : null;
 
   return (

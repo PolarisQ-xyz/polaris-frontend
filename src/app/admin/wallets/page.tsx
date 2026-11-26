@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { api, messageFromApiError } from '@/lib/api';
 import { useAdminKey } from '@/lib/admin-key-provider';
+import { Button } from '@/components/ui/button';
 import { Card, CardBody } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { shortAddress, formatDateTime } from '@/lib/format';
@@ -20,7 +21,7 @@ function maskEmail(email: string): string {
 export default function AdminWalletsPage() {
   const { adminKey } = useAdminKey();
   const [revealed, setRevealed] = useState<Set<string>>(() => new Set());
-  const { data, isLoading } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryKey: qk.admin.wallets(adminKey),
     queryFn: () => api.getAdminWallets(adminKey),
     refetchInterval: 30_000,
@@ -37,6 +38,18 @@ export default function AdminWalletsPage() {
       return next;
     });
   };
+
+  // A failed background refetch keeps showing the last good data.
+  if (error && !data && !isLoading) {
+    return (
+      <div role="alert" className="space-y-3">
+        <p className="text-sm text-[var(--no)] break-all">{messageFromApiError(error)}</p>
+        <Button size="sm" variant="outline" onClick={() => void refetch()}>
+          Retry
+        </Button>
+      </div>
+    );
+  }
 
   if (isLoading || !data) {
     return <p className="text-sm text-[var(--muted)]">Loading…</p>;

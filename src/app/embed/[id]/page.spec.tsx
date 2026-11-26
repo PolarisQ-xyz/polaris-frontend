@@ -71,6 +71,18 @@ describe('EmbedMarketPage', () => {
     expect(getButton('Buy Yes')).toBeTruthy();
   });
 
+  it('Polaris attribution link uses a relative /market/ href with target=_blank', async () => {
+    m.queries = openQueries();
+    await renderPage();
+
+    const link = Array.from(document.querySelectorAll('a')).find((a) =>
+      a.getAttribute('href')?.startsWith('/market/'),
+    );
+    expect(link).toBeTruthy();
+    expect(link?.getAttribute('href')).toBe(`/market/${ID}`);
+    expect(link?.getAttribute('target')).toBe('_blank');
+  });
+
   it('closed market with a position: compact reveal with an /embed/ next-round href', async () => {
     m.queries = {
       market: { contractId: ID, status: 'resolved', strikePriceCents: '15' },

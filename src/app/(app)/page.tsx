@@ -8,9 +8,10 @@ import { Card, CardBody } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { OddsBar } from '@/components/odds-bar';
 import { TradeCard } from '@/components/trade-card';
-import { centsToUsd, formatCountdown, statusLabel } from '@/lib/format';
+import { centsToUsd, statusLabel } from '@/lib/format';
 import { rankMarkets } from '@/lib/rank-markets';
 import { qk } from '@/lib/query-keys';
+import { useCountdown } from '@/lib/use-countdown';
 
 /**
  * The primary landing experience: one open market, featured full-width,
@@ -33,6 +34,7 @@ export default function HomePage() {
 
   const ranked = markets ? rankMarkets(markets) : [];
   const featured = ranked.length > 0 ? ranked[featuredIndex % ranked.length] : null;
+  const countdown = useCountdown(featured?.status === 'watching' ? featured.expiry : undefined);
 
   const { data: price } = useQuery({
     queryKey: qk.market.price(featured?.contractId),
@@ -123,7 +125,7 @@ export default function HomePage() {
             </Card>
           )}
 
-          <p className="text-sm text-[var(--muted)]">closes in {formatCountdown(featured.expiry)}</p>
+          <p className="text-sm text-[var(--muted)]">closes in {countdown}</p>
         </div>
 
         <div>

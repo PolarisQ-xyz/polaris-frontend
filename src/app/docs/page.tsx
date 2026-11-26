@@ -39,10 +39,9 @@ export default function DocsPage() {
           to the network. You pay your own transaction fees and need some XLM in your own account to trade.
         </p>
         <p className="text-sm leading-relaxed">
-          No Freighter installed? The email fallback registers a one-time code instead, and the backend signs
-          trades on your behalf against a server-held Soroban smart-wallet contract — a custom account whose{' '}
-          <code>__check_auth</code> verifies a server-generated WebAuthn-shaped signature, not a browser
-          passkey. This path is custodial by design (see the trust model below) and exists purely so someone
+          No Freighter installed? The email fallback lets you sign in with an email one-time code instead.
+          Trades are signed server-side against a server-held Soroban smart-wallet contract.
+          This path is custodial by design (see the trust model below) and exists purely so someone
           without a wallet extension can still try the product.
         </p>
       </section>

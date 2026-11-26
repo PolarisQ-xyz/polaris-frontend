@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { QueryProvider } from '@/lib/query-provider';
 import { WalletProvider } from '@/lib/wallet-provider';
+import { DisplayCurrencyProvider } from '@/lib/display-currency';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -19,10 +20,14 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      {/* reads localStorage before first paint to avoid theme flash */}
+      <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}` }} />
       <body>
         <QueryProvider>
-          <WalletProvider>{children}</WalletProvider>
+          <DisplayCurrencyProvider>
+            <WalletProvider>{children}</WalletProvider>
+          </DisplayCurrencyProvider>
         </QueryProvider>
       </body>
     </html>

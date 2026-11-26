@@ -5,7 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useWallet } from '@/lib/wallet-provider';
 import { Button } from '@/components/ui/button';
 import { api } from '@/lib/api';
-import { shortAddress, stroopsToXlm } from '@/lib/format';
+import { shortAddress } from '@/lib/format';
+import { useFormatStroops } from '@/lib/display-currency';
 import { qk } from '@/lib/query-keys';
 
 /** Backend rate-limits OTP requests; keep the resend link disabled for this long after each successful send so the user isn't just bouncing off that limit. */
@@ -14,6 +15,7 @@ const RESEND_COOLDOWN_SECS = 30;
 type EmailStep = 'idle' | 'code-sent';
 
 export function AuthControls() {
+  const formatStroops = useFormatStroops();
   const { address, email, connectEmail, disconnect } = useWallet();
   const [emailStep, setEmailStep] = useState<EmailStep>('idle');
   const [emailInput, setEmailInput] = useState('');
@@ -50,7 +52,7 @@ export function AuthControls() {
       <div className="flex items-center gap-2">
         {balance && (
           <span className="text-xs font-mono text-[var(--muted)]">
-            {stroopsToXlm(balance.balanceStroops)} XLM
+            {formatStroops(balance.balanceStroops)}
           </span>
         )}
         <span className="rounded-full bg-[var(--surface-2)] px-3 py-1.5 text-xs font-mono">

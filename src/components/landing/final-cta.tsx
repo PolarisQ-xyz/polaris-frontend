@@ -15,7 +15,7 @@ export function FinalCta() {
         </p>
         <div className="mt-8">
           <Link href="/?new=1" className={cn(buttonVariants({ variant: 'primary', size: 'lg' }))}>
-            Connect wallet
+            Connect Wallet
           </Link>
         </div>
       </Reveal>

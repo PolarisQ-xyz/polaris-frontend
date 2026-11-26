@@ -76,9 +76,17 @@ function PositionRow({ contractId }: { contractId: string }) {
     status === 'Open' ? (price ? markToMarket(pos, price.yesBps, price.noBps) : null) : redeemableValue(status, pos);
   const win = didWin(status, pos);
 
+  const isRedeemable = status !== 'Open';
+
   return (
     <Link href={`/market/${contractId}`}>
       <Card className="transition-shadow hover:shadow-md">
+        {isRedeemable && (
+          <div className="flex items-center gap-1.5 rounded-t-[inherit] border-b border-[var(--accent)] bg-[var(--accent-soft)] px-4 py-1.5 text-xs font-medium text-[var(--accent-ink)]">
+            <span>Redeemable position — click to claim</span>
+            <span aria-hidden="true">→</span>
+          </div>
+        )}
         <CardBody className="flex items-center justify-between">
           <div>
             <div className="text-sm font-semibold">Will XLM be ≥ {centsToUsd(market.strikePriceCents)}?</div>

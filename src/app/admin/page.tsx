@@ -1,8 +1,9 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { api, messageFromApiError } from '@/lib/api';
 import { useAdminKey } from '@/lib/admin-key-provider';
+import { Button } from '@/components/ui/button';
 import { Card, CardBody } from '@/components/ui/card';
 import { BarList } from '@/components/admin/bar-list';
 import { stroopsToXlm } from '@/lib/format';
@@ -21,11 +22,23 @@ function StatTile({ label, value }: { label: string; value: string }) {
 
 export default function AdminOverviewPage() {
   const { adminKey } = useAdminKey();
-  const { data, isLoading } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryKey: qk.admin.overview(adminKey),
     queryFn: () => api.getAdminOverview(adminKey),
     refetchInterval: 30_000,
   });
+
+  // A failed background refetch keeps showing the last good data.
+  if (error && !data && !isLoading) {
+    return (
+      <div role="alert" className="space-y-3">
+        <p className="text-sm text-[var(--no)] break-all">{messageFromApiError(error)}</p>
+        <Button size="sm" variant="outline" onClick={() => void refetch()}>
+          Retry
+        </Button>
+      </div>
+    );
+  }
 
   if (isLoading || !data) {
     return <p className="text-sm text-[var(--muted)]">Loading…</p>;

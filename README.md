@@ -341,3 +341,8 @@ that applies to wallet/signing code.
 ## License
 
 [MIT](./LICENSE)
+
+## Handsoff notes
+
+<!-- handsoff-issue-94 -->
+- #94: trade-card.tsx: rollover prefill can overwrite an amount the user already typed

@@ -67,8 +67,10 @@ export default function EmbedMarketPage({ params }: { params: Promise<{ id: stri
   // must not show a signed-in state that can't trade — instead point the
   // user at the main app in a new tab.
   const [emailSessionBlocked, setEmailSessionBlocked] = useState(false);
-  const openInPolarisHref =
-    typeof window !== 'undefined' ? `${window.location.origin}/market/${id}` : '#';
+  // Relative href — same origin by definition, so server and client render
+  // identical HTML (no window read, no hydration mismatch) and no-JS
+  // consumers still get a working link.
+  const openInPolarisHref = `/market/${id}`;
 
   // Report the widget's content height to the host page so it can size the
   // iframe to fit — otherwise taller states (email fallback, ResultReveal,
@@ -200,127 +202,117 @@ export default function EmbedMarketPage({ params }: { params: Promise<{ id: stri
         <CardBody className="space-y-3 p-4">
           <div className="flex items-center justify-between">
             <a
-              href={typeof window !== 'undefined' ? `${window.location.origin}/market/${id}` : '#'}
+              href={openInPolarisHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-semibold text-[var(--faint)] hover:text-[var(--accent-ink)]"
+              className="flex items-center gap-1.5 text-xs font-medium text-[var(--muted)] hover:text-[var(--fg)]"
             >
-              <LogoMark size="xs" />
+              <LogoMark className="h-4 w-4" />
               Polaris
             </a>
-            {!isOpen && <span className="text-xs text-[var(--faint)]">{statusLabel(market.status)}</span>}
+            <AuthControls />
           </div>
 
-          <h2 className="text-sm font-semibold leading-snug">XLM ≥ {centsToUsd(market.strikePriceCents)}?</h2>
-          <p className="-mt-1.5 text-[10px] text-[var(--faint)]">
-            Can&rsquo;t lose more than you stake &mdash; funds are locked until the market settles.
-          </p>
-
-          {price && <OddsBar yesBps={price.yesBps} noBps={price.noBps} />}
-
-          {!isOpen ? (
-            pos && (pos.yes > 0n || pos.no > 0n) && onChainStatus && onChainStatus !== 'Open' ? (
-              <ResultReveal
-                status={onChainStatus}
-                position={pos}
-                compact
-                nextRoundHref={nextRound ? `/embed/${nextRound.contractId}` : undefined}
-              />
-            ) : (
-              <p className="text-xs text-[var(--muted)]">Trading closed.</p>
-            )
-          ) : emailSessionBlocked ? (
-            <div className="space-y-2 rounded-lg border border-[var(--line)] bg-[var(--surface)] p-3">
-              <p className="text-xs text-[var(--muted)]">
-                Your browser blocked the sign-in session inside this embed. Open Polaris to
-                sign in with email and trade.
-              </p>
-              <a
-                href={openInPolarisHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-11 min-h-11 w-full items-center justify-center rounded-lg bg-[var(--accent-ink)] px-3 text-xs font-semibold text-white"
-              >
-                Open in Polaris to sign in with email
-              </a>
+          <div className="space-y-1">
+            <h1 className="text-base font-semibold leading-snug">{market.question}</h1>
+            <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
+              <span>{statusLabel(market.status)}</span>
+              {price && <span>· {centsToUsd(price.yesCents)} Yes</span>}
             </div>
-          ) : showEmailFallback ? (
-            <AuthControls
-              compact
-              autoFocus={false}
-              embed
-              onEmailSessionUnusable={() => setEmailSessionBlocked(true)}
+          </div>
+
+          {state && (
+            <OddsBar
+              poolYes={BigInt(state.poolYes)}
+              poolNo={BigInt(state.poolNo)}
             />
-          ) : (
+          )}
+
+          {market.status === 'resolved' && state && (
+            <ResultReveal
+              market={market}
+              state={state}
+              position={pos}
+              onChainStatus={onChainStatus}
+            />
+          )}
+
+          {isOpen && (
             <div className="space-y-2">
               <div className="grid grid-cols-2 gap-2">
-                <Button size="sm" variant={side === 'Yes' ? 'yes' : 'outline'} onClick={() => setSide('Yes')}>
-                  YES
+                <Button
+                  variant={side === 'Yes' ? 'primary' : 'secondary'}
+                  onClick={() => setSide('Yes')}
+                >
+                  Yes
                 </Button>
                 <Button
-                  size="sm"
-                  variant={side === 'No' ? 'no' : 'outline'}
+                  variant={side === 'No' ? 'primary' : 'secondary'}
                   onClick={() => setSide('No')}
-                  className="h-11 min-h-11"
                 >
-                  NO
+                  No
                 </Button>
               </div>
+
               <input
-                className="h-11 w-full rounded-lg border border-[var(--line)] bg-[var(--surface)] px-2 text-xs"
+                type="text"
+                inputMode="decimal"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                inputMode="decimal"
-                placeholder="XLM amount"
+                className="w-full rounded-md border border-[var(--border)] bg-transparent px-3 py-2 text-sm"
+                placeholder="Amount (XLM)"
               />
+
               {payoutPreview && (
-                <p className="text-[10px] text-[var(--faint)]">
-                  You get <span className="font-semibold text-[var(--ink)]">{payoutPreview} XLM</span> if{' '}
-                  {side.toUpperCase()} wins
+                <p className="text-xs text-[var(--muted)]">
+                  Potential payout: {payoutPreview} XLM
                 </p>
               )}
-              <Button
-                size="sm"
-                className="w-full"
-                variant={side === 'Yes' ? 'yes' : 'no'}
-                onClick={handleTrade}
-                disabled={busy || connecting || !state || !fee || !payoutPreview}
-              >
-                {connecting
-                  ? 'Confirm in Freighter…'
-                  : busy
-                    ? wallet?.kind === 'email'
-                      ? 'Placing bet…'
-                      : 'Confirm in Freighter…'
-                    : `Buy ${side}`}
-              </Button>
-              {!wallet && !connecting && (
-                <p className="text-center text-[10px] text-[var(--faint)]">
-                  Connects Freighter &mdash; sign with your own wallet
+
+              {wallet ? (
+                <Button onClick={handleTrade} disabled={busy} className="w-full">
+                  {busy ? 'Trading…' : `Buy ${side}`}
+                </Button>
+              ) : showEmailFallback ? (
+                <div className="space-y-2">
+                  <AuthControls />
+                  {emailSessionBlocked && (
+                    <p className="text-xs text-[var(--muted)]">
+                      Your browser blocked the session cookie inside this embed.{' '}
+                      <a
+                        href={openInPolarisHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline"
+                      >
+                        Open in Polaris
+                      </a>{' '}
+                      to trade.
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <Button onClick={handleTrade} disabled={busy || connecting} className="w-full">
+                  {connecting ? 'Connecting…' : 'Connect wallet'}
+                </Button>
+              )}
+
+              {walletError && !wallet && (
+                <p className="text-xs text-[var(--danger)]">{walletError}</p>
+              )}
+              {txError && <p className="text-xs text-[var(--danger)]">{txError}</p>}
+              {txResult && (
+                <p className="text-xs text-[var(--muted)]">
+                  Trade submitted: {shortAddress(txResult)}
                 </p>
               )}
             </div>
           )}
 
-          {(txResult || txError || walletError) && (
-            <p
-              className={`text-[10px] ${txError || walletError ? 'text-[var(--no)] break-all' : 'text-[var(--yes)]'}`}
-            >
-              {txError ?? walletError ?? (
-                <>
-                  Confirmed <span className="text-[var(--faint)]">— ref {shortAddress(txResult!)}</span>
-                </>
-              )}
+          {nextRound && (
+            <p className="text-xs text-[var(--muted)]">
+              Next round opens {nextRound.label}
             </p>
-          )}
-          {walletError && !wallet && !showEmailFallback && (
-            <button
-              type="button"
-              onClick={() => setPreferEmail(true)}
-              className="text-[10px] text-[var(--faint)] underline"
-            >
-              Try email instead
-            </button>
           )}
         </CardBody>
       </Card>

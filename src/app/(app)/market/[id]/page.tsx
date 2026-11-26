@@ -11,12 +11,12 @@ import { EmbedCodeButton } from '@/components/embed-code-button';
 import { TradeCard } from '@/components/trade-card';
 import {
   centsToUsd,
-  formatCountdown,
   statusLabel,
   stroopsToXlm,
   isPollableStatus,
   RESOLUTION_POLL_MS,
 } from '@/lib/format';
+import { useCountdown } from '@/lib/use-countdown';
 
 export default function MarketDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -98,14 +98,15 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
     refetchOnWindowFocus: true,
   });
 
+  const isOpen = market?.status === 'watching';
+  const countdown = useCountdown(isOpen ? market?.expiry : undefined);
+
   if (isLoading) {
     return <p className="text-sm text-[var(--muted)]">Loading…</p>;
   }
   if (!market) {
     return <p className="text-sm text-[var(--muted)]">Market unavailable.</p>;
   }
-
-  const isOpen = market.status === 'watching';
 
   const strikeCents = market.strikePriceCents;
   const nowCents = ticker?.priceCents;
@@ -163,7 +164,7 @@ export default function MarketDetailPage({ params }: { params: Promise<{ id: str
             <div>
               <div className="text-[var(--faint)]">Status</div>
               <div className="font-semibold">
-                {isOpen ? formatCountdown(market.expiry) : statusLabel(market.status)}
+                {isOpen ? countdown : statusLabel(market.status)}
               </div>
             </div>
             {state && (

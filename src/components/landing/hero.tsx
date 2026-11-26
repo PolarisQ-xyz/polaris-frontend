@@ -39,7 +39,7 @@ export function Hero() {
                 'shadow-lg shadow-[#5b4fe033]',
               )}
             >
-              Connect wallet
+              Connect Wallet
             </Link>
             <a href="#how-it-works" className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}>
               See how it works

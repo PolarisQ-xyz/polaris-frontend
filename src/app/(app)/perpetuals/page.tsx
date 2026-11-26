@@ -1,12 +1,30 @@
+'use client';
+
 import Link from 'next/link';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import { Card, CardBody } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { statusLabel } from '@/lib/format';
 import { qk } from '@/lib/query-keys';
 
-function PerpetualCard({ contractId }: { contractId: string }) {
+function statusTone(status: string): 'yes' | 'no' | 'warn' | 'neutral' {
+  if (status === 'watching') return 'yes';
+  if (status === 'terminated') return 'no';
+  return 'neutral';
+}
+
+/**
+ * Same dense ticker row as `/markets` (Market | Yes | No | Status), adapted
+ * for a perpetual: no strike or expiry exists, so the time metadata is
+ * "continuous" while open and "terminated" once it has ended.
+ *
+ * There is deliberately no Chg column: `GET /perpetuals/:id/price` doesn't
+ * return a historical change yet (unlike `/markets/:id/price`'s
+ * `yesBpsChange`), and a fabricated "+0%" would read as "hasn't moved".
+ * Add it here, mirroring `/markets`' `ChgCell`, when the backend supports it.
+ */
+function PerpetualRow({ contractId }: { contractId: string }) {
   const { data: perpetual } = useQuery({
     queryKey: qk.perpetual.detail(contractId),
     queryFn: () => api.getPerpetual(contractId),
@@ -20,27 +38,51 @@ function PerpetualCard({ contractId }: { contractId: string }) {
 
   if (!perpetual) return null;
 
+  const yesPct = price ? Math.round(price.yesBps / 100) : undefined;
+  const noPct = price ? Math.round(price.noBps / 100) : undefined;
+  const isOpen = perpetual.status === 'watching';
+
   return (
-    <Link href={`/perpetual/${contractId}`}>
-      <Card className="transition-shadow hover:shadow-md">
-        <CardBody>
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wide text-[var(--faint)]">XLM/USD</span>
-            <Badge tone={perpetual.status === 'watching' ? 'accent' : 'neutral'}>
-              {statusLabel(perpetual.status)}
-            </Badge>
-          </div>
-          <h3 className="mb-3 text-lg font-semibold">XLM/USD perpetual</h3>
-          {price ? (
-            <OddsBar yesBps={price.yesBps} noBps={price.noBps} />
-          ) : (
-            <div className="h-2 w-full rounded-full bg-[var(--surface-2)]" />
-          )}
-          <div className="mt-3 text-xs text-[var(--muted)]">
-            {perpetual.status === 'watching' ? 'continuous — no expiry' : 'terminated'}
-          </div>
-        </CardBody>
-      </Card>
+    <Link
+      href={`/perpetual/${contractId}`}
+      className="grid grid-cols-[auto_1fr_auto_auto_auto] items-center gap-x-3 px-4 py-3 transition-colors hover:bg-[var(--surface-2)] sm:gap-x-5 sm:px-5"
+    >
+      <span
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+        style={{ background: isOpen ? 'var(--brand-gradient)' : 'var(--faint)' }}
+      >
+        XL
+      </span>
+
+      <span className="min-w-0">
+        <span className="block truncate font-semibold">XLM/USD</span>
+        <span className="block truncate text-xs text-[var(--muted)]">Perpetual</span>
+      </span>
+
+      <span className="text-right font-mono text-sm tabular-nums">
+        {yesPct !== undefined ? (
+          <span style={{ color: 'var(--yes)' }}>{yesPct}%</span>
+        ) : (
+          <span className="text-[var(--faint)]">—</span>
+        )}
+        <span className="block text-[10px] uppercase tracking-wide text-[var(--faint)]">Yes</span>
+      </span>
+
+      <span className="text-right font-mono text-sm tabular-nums">
+        {noPct !== undefined ? (
+          <span style={{ color: 'var(--no)' }}>{noPct}%</span>
+        ) : (
+          <span className="text-[var(--faint)]">—</span>
+        )}
+        <span className="block text-[10px] uppercase tracking-wide text-[var(--faint)]">No</span>
+      </span>
+
+      <span className="hidden text-right sm:block">
+        <Badge tone={statusTone(perpetual.status)}>{statusLabel(perpetual.status)}</Badge>
+        <span className="mt-1 block text-xs text-[var(--muted)]">
+          {isOpen ? 'continuous — no expiry' : 'terminated'}
+        </span>
+      </span>
     </Link>
   );
 }
@@ -51,10 +93,6 @@ function PerpetualCard({ contractId }: { contractId: string }) {
  * "Perpetual markets" for why: the two contracts have different enough
  * shapes that a shared schema/list would need a pile of fields meaningless
  * for one kind or the other).
- *
- * Server component: the list is fetched on the server (short `revalidate`)
- * so the initial HTML contains the rows, then React Query is hydrated on the
- * client so polling continues after hydration.
  */
 export default function AllPerpetualsPage() {
   const {
@@ -62,7 +100,7 @@ export default function AllPerpetualsPage() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['perpetuals'],
+    queryKey: qk.perpetuals.list(),
     queryFn: api.listPerpetuals,
     refetchInterval: 30_000,
   });
@@ -84,9 +122,22 @@ export default function AllPerpetualsPage() {
         <p className="text-sm text-[var(--muted)]">No perpetuals yet — an admin can create one.</p>
       )}
 
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <PerpetualsList />
-      </HydrationBoundary>
+      {perpetuals && perpetuals.length > 0 && (
+        <Card className="overflow-hidden">
+          <div className="grid grid-cols-[auto_1fr_auto_auto_auto] gap-x-3 border-b border-[var(--line)] px-4 py-2 text-[10px] font-semibold uppercase tracking-wide text-[var(--faint)] sm:gap-x-5 sm:px-5">
+            <span className="w-8" />
+            <span>Market</span>
+            <span className="text-right">Yes</span>
+            <span className="text-right">No</span>
+            <span className="hidden text-right sm:block">Status</span>
+          </div>
+          <div className="divide-y divide-[var(--line)]">
+            {perpetuals.map((p) => (
+              <PerpetualRow key={p.contractId} contractId={p.contractId} />
+            ))}
+          </div>
+        </Card>
+      )}
     </div>
   );
 }

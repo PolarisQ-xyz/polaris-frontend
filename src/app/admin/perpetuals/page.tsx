@@ -17,7 +17,7 @@ export default function AdminPerpetualsPage() {
   const [actionError, setActionError] = useState<string | null>(null);
   const [checkpointPrice, setCheckpointPrice] = useState('');
 
-  const { data: perpetuals } = useQuery({ queryKey: qk.perpetuals.list(), queryFn: api.listPerpetuals });
+  const { data: perpetuals, isLoading: loadingPerpetuals } = useQuery({ queryKey: qk.perpetuals.list(), queryFn: api.listPerpetuals });
 
   useEffect(() => {
     void load();
@@ -70,6 +70,11 @@ export default function AdminPerpetualsPage() {
       {actionError && <p className="text-sm text-red-500">{actionError}</p>}
 
       <div className="space-y-3">
+        {loadingPerpetuals ? (
+          <p className="text-sm text-[var(--muted)]">Loading…</p>
+        ) : perpetuals?.length === 0 ? (
+          <p className="text-sm text-[var(--muted)]">No perpetuals found.</p>
+        ) : null}
         {perpetuals?.map((p) => (
           <Card key={p.contractId}>
             <CardBody className="flex flex-wrap items-center justify-between gap-3">
