@@ -69,14 +69,11 @@ function PositionRow({ contractId }: { contractId: string }) {
   if (pos.yes === 0n && pos.no === 0n) return null;
 
   const status = state.status as MarketStatus;
-  // Open but price not loaded yet: don't compute a value from a missing
-  // price (redeemableValue('Open') is 0n by design) — show a placeholder.
+  // While an open market's price is still loading there is nothing honest to
+  // show — `redeemableValue('Open', ...)` is 0 by design — so render a
+  // placeholder rather than a computed value.
   const value =
-    status === 'Open'
-      ? price
-        ? markToMarket(pos, price.yesBps, price.noBps)
-        : null
-      : redeemableValue(status, pos);
+    status === 'Open' ? (price ? markToMarket(pos, price.yesBps, price.noBps) : null) : redeemableValue(status, pos);
   const win = didWin(status, pos);
 
   const isRedeemable = status !== 'Open';

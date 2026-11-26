@@ -67,12 +67,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </Link>
           </nav>
           <div className="flex items-center gap-2">
-            {wallet && portfolio?.hasPosition && (
+            {wallet && (portfolio?.hasPosition || portfolio?.incomplete) && (
               <Link
                 href="/bets"
+                title={portfolio.incomplete ? 'Some positions could not be loaded; total is a lower bound' : undefined}
                 className="rounded-full bg-[var(--surface-2)] px-3 py-1.5 text-xs font-semibold hover:opacity-80"
               >
-                {formatStroops(portfolio.total)} in play
+                {portfolio.incomplete ? '≥ ' : ''}
+                {stroopsToXlm(portfolio.total)} XLM in play
               </Link>
             )}
             <button

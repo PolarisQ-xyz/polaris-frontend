@@ -101,7 +101,7 @@ describe('usePortfolioValue', () => {
     expect(m.getPrice).not.toHaveBeenCalled();
   });
 
-  it('flags the total as incomplete when a row errors, without hiding the others', async () => {
+  it('flags the total incomplete when a row errors, without hiding the others', async () => {
     setup({
       A: { status: 'ResolvedYes', yes: '500', no: '0' },
       B: { status: 'Open', yes: '1', no: '1', error: true },
