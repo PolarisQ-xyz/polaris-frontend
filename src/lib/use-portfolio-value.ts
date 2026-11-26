@@ -16,8 +16,12 @@ import { qk } from '@/lib/query-keys';
  * per-row logic and why `Terminated` reuses `redeemableValue('Cancelled',
  * ...)`), so the pill reflects *every* position the wallet holds, not just
  * classic-market ones.
+ *
+ * A row whose query errored is excluded from the sum and flags the result
+ * `incomplete`, so the header can show the total as a lower bound ("≥ X")
+ * rather than a precise-looking number that silently counts it as zero.
  */
-export function usePortfolioValue(): { total: bigint; hasPosition: boolean } | null {
+export function usePortfolioValue(): { total: bigint; hasPosition: boolean; incomplete: boolean } | null {
   const { wallet } = useWallet();
   const { data: markets } = useQuery({ queryKey: ['markets'], queryFn: api.listMarkets, enabled: !!wallet });
   const { data: perpetuals } = useQuery({
@@ -72,7 +76,8 @@ export function usePortfolioValue(): { total: bigint; hasPosition: boolean } | n
   const results = [...marketResults, ...perpetualResults];
   if (results.some((r) => r.isLoading)) return null;
 
-  const values = results.map((r) => (r.data as bigint | undefined) ?? 0n);
+  const incomplete = results.some((r) => r.isError);
+  const values = results.filter((r) => !r.isError).map((r) => (r.data as bigint | undefined) ?? 0n);
   const total = values.reduce((sum, v) => sum + v, 0n);
-  return { total, hasPosition: values.some((v) => v > 0n) };
+  return { total, hasPosition: values.some((v) => v > 0n), incomplete };
 }

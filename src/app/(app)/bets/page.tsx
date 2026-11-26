@@ -69,8 +69,11 @@ function PositionRow({ contractId }: { contractId: string }) {
   if (pos.yes === 0n && pos.no === 0n) return null;
 
   const status = state.status as MarketStatus;
+  // While an open market's price is still loading there is nothing honest to
+  // show — `redeemableValue('Open', ...)` is 0 by design — so render a
+  // placeholder rather than a computed value.
   const value =
-    status === 'Open' && price ? markToMarket(pos, price.yesBps, price.noBps) : redeemableValue(status, pos);
+    status === 'Open' ? (price ? markToMarket(pos, price.yesBps, price.noBps) : null) : redeemableValue(status, pos);
   const win = didWin(status, pos);
 
   return (
@@ -84,7 +87,7 @@ function PositionRow({ contractId }: { contractId: string }) {
             </div>
           </div>
           <div className="text-right">
-            <div className="text-sm font-semibold">{stroopsToXlm(value)} XLM</div>
+            <div className="text-sm font-semibold">{value === null ? '—' : `${stroopsToXlm(value)} XLM`}</div>
             <div className="mt-1">
               {win === true && <Badge tone="yes">won</Badge>}
               {win === false && <Badge tone="no">lost</Badge>}
@@ -143,8 +146,11 @@ function PerpetualPositionRow({ contractId }: { contractId: string }) {
   // `redeemableValue` only knows the classic-market status union, so
   // `'Cancelled'` is the equivalent case here, not a re-derivation of the
   // same math.
-  const value =
-    isOpen && price ? markToMarket(pos, price.yesBps, price.noBps) : redeemableValue('Cancelled', pos);
+  const value = isOpen
+    ? price
+      ? markToMarket(pos, price.yesBps, price.noBps)
+      : null
+    : redeemableValue('Cancelled', pos);
 
   return (
     <Link href={`/perpetual/${contractId}`}>
@@ -157,7 +163,7 @@ function PerpetualPositionRow({ contractId }: { contractId: string }) {
             </div>
           </div>
           <div className="text-right">
-            <div className="text-sm font-semibold">{stroopsToXlm(value)} XLM</div>
+            <div className="text-sm font-semibold">{value === null ? '—' : `${stroopsToXlm(value)} XLM`}</div>
             <div className="mt-1">
               <Badge tone={isOpen ? 'accent' : 'neutral'}>{isOpen ? 'mark-to-market' : 'terminated'}</Badge>
             </div>

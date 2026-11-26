@@ -67,18 +67,18 @@ describe('usePortfolioValue', () => {
   it('marks an open market to market at known odds', async () => {
     // 1000 YES @ 6000bps + 500 NO @ 4000bps = 600 + 200
     setup({ A: { status: 'Open', yes: '1000', no: '500', yesBps: 6000, noBps: 4000 } });
-    expect(await settle()).toEqual({ total: 800n, hasPosition: true });
+    expect(await settle()).toEqual({ total: 800n, hasPosition: true, incomplete: false });
   });
 
   it('values a ResolvedYes winner at its YES balance only', async () => {
     setup({ A: { status: 'ResolvedYes', yes: '1234', no: '99' } });
-    expect(await settle()).toEqual({ total: 1234n, hasPosition: true });
+    expect(await settle()).toEqual({ total: 1234n, hasPosition: true, incomplete: false });
     expect(m.getPrice).not.toHaveBeenCalled();
   });
 
   it('pays a Cancelled market 0.5 per share on either side', async () => {
     setup({ A: { status: 'Cancelled', yes: '301', no: '100' } });
-    expect(await settle()).toEqual({ total: 200n, hasPosition: true }); // (301+100)/2 floored
+    expect(await settle()).toEqual({ total: 200n, hasPosition: true, incomplete: false }); // (301+100)/2 floored
   });
 
   it('pays a terminated perpetual with the Cancelled formula, summed with markets', async () => {
@@ -86,26 +86,26 @@ describe('usePortfolioValue', () => {
       { A: { status: 'ResolvedNo', yes: '10', no: '40' } },
       { P: { status: 'Terminated', yes: '700', no: '301' } },
     );
-    expect(await settle()).toEqual({ total: 40n + 500n, hasPosition: true });
+    expect(await settle()).toEqual({ total: 40n + 500n, hasPosition: true, incomplete: false });
     expect(m.getPerpetualPrice).not.toHaveBeenCalled();
   });
 
   it('marks an open perpetual to market', async () => {
     setup({}, { P: { status: 'Open', yes: '3333', no: '0', yesBps: 3000, noBps: 7000 } });
-    expect(await settle()).toEqual({ total: 999n, hasPosition: true }); // 3333*3000/10000 floored
+    expect(await settle()).toEqual({ total: 999n, hasPosition: true, incomplete: false }); // 3333*3000/10000 floored
   });
 
   it('reports hasPosition false when every balance is zero', async () => {
     setup({ A: { status: 'Open', yes: '0', no: '0' } }, { P: { status: 'Open', yes: '0', no: '0' } });
-    expect(await settle()).toEqual({ total: 0n, hasPosition: false });
+    expect(await settle()).toEqual({ total: 0n, hasPosition: false, incomplete: false });
     expect(m.getPrice).not.toHaveBeenCalled();
   });
 
-  it('counts an errored row as 0 without hiding the others', async () => {
+  it('flags the total incomplete when a row errors, without hiding the others', async () => {
     setup({
       A: { status: 'ResolvedYes', yes: '500', no: '0' },
       B: { status: 'Open', yes: '1', no: '1', error: true },
     });
-    expect(await settle()).toEqual({ total: 500n, hasPosition: true });
+    expect(await settle()).toEqual({ total: 500n, hasPosition: true, incomplete: true });
   });
 });
