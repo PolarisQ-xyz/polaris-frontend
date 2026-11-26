@@ -1,12 +1,19 @@
 const STROOPS_PER_XLM = 10_000_000n;
 
-/** Native XLM (and this market's collateral/shares) use 7 decimal places. */
+/**
+ * Native XLM (and this market's collateral/shares) use 7 decimal places.
+ *
+ * Negative inputs are supported: the magnitude is formatted and a leading
+ * `-` is prepended, so `stroopsToXlm(-12_345_678n)` returns `"-1.23"`.
+ */
 export function stroopsToXlm(stroops: string | bigint, fractionDigits = 2): string {
   const value = typeof stroops === 'string' ? BigInt(stroops) : stroops;
-  const whole = value / STROOPS_PER_XLM;
-  const frac = value % STROOPS_PER_XLM;
+  const negative = value < 0n;
+  const abs = negative ? -value : value;
+  const whole = abs / STROOPS_PER_XLM;
+  const frac = abs % STROOPS_PER_XLM;
   const fracStr = frac.toString().padStart(7, '0').slice(0, fractionDigits);
-  return `${whole.toString()}.${fracStr}`;
+  return `${negative ? '-' : ''}${whole.toString()}.${fracStr}`;
 }
 
 /**
@@ -76,6 +83,8 @@ export function formatStroops(
 export function formatCountdown(expiryUnixSecs: number): string {
   const diff = expiryUnixSecs * 1000 - Date.now();
   if (diff <= 0) return 'expired';
+  const secs = Math.floor(diff / 1000);
+  if (secs < 60) return `${secs}s`;
   const mins = Math.floor(diff / 60_000);
   const hours = Math.floor(mins / 60);
   const days = Math.floor(hours / 24);

@@ -1,39 +1,65 @@
-import { describe, expect, it } from 'vitest';
-import { formatStroops, isDisplayCurrency } from './format';
+import { describe, it, expect } from 'vitest';
+import { stroopsToXlm, formatCountdown } from './format';
 
-describe('formatStroops', () => {
-  it('defaults to XLM', () => {
-    expect(formatStroops('123456789')).toBe('12.34 XLM');
+describe('stroopsToXlm', () => {
+  it('formats zero', () => {
+    expect(stroopsToXlm(0n)).toBe('0.00');
   });
 
-  it('formats stroops with thousands separators', () => {
-    expect(formatStroops('123456789', 'stroops')).toBe('123,456,789 stroops');
-    expect(formatStroops(5n, 'stroops')).toBe('5 stroops');
+  it('formats whole amounts', () => {
+    expect(stroopsToXlm(10_000_000n)).toBe('1.00');
   });
 
-  it('converts to a USD estimate at the given XLM price in cents', () => {
-    // 10 XLM at 25 cents each = $2.50
-    expect(formatStroops('100000000', 'usd', 25)).toBe('≈ $2.50');
+  it('formats fractional amounts', () => {
+    expect(stroopsToXlm(12_345_678n)).toBe('1.23');
   });
 
-  it('falls back to XLM when the USD rate is missing or invalid', () => {
-    expect(formatStroops('100000000', 'usd')).toBe('10.00 XLM');
-    expect(formatStroops('100000000', 'usd', null)).toBe('10.00 XLM');
-    expect(formatStroops('100000000', 'usd', 0)).toBe('10.00 XLM');
-    expect(formatStroops('100000000', 'usd', Number.NaN)).toBe('10.00 XLM');
+  it('pads small fractions', () => {
+    expect(stroopsToXlm(1n)).toBe('0.00');
   });
 
-  it('accepts bigint and string input alike', () => {
-    expect(formatStroops(100000000n, 'xlm')).toBe(formatStroops('100000000', 'xlm'));
+  it('respects fractionDigits', () => {
+    expect(stroopsToXlm(12_345_678n, 4)).toBe('1.2345');
+  });
+
+  it('formats negative whole amounts', () => {
+    expect(stroopsToXlm(-10_000_000n)).toBe('-1.00');
+  });
+
+  it('formats negative fractional amounts', () => {
+    expect(stroopsToXlm(-12_345_678n)).toBe('-1.23');
+  });
+
+  it('formats small negative amounts', () => {
+    expect(stroopsToXlm(-1n)).toBe('0.00');
+  });
+
+  it('respects fractionDigits for negative amounts', () => {
+    expect(stroopsToXlm(-12_345_678n, 4)).toBe('-1.2345');
   });
 });
 
-describe('isDisplayCurrency', () => {
-  it('accepts only the three supported currencies', () => {
-    expect(isDisplayCurrency('stroops')).toBe(true);
-    expect(isDisplayCurrency('xlm')).toBe(true);
-    expect(isDisplayCurrency('usd')).toBe(true);
-    expect(isDisplayCurrency('eur')).toBe(false);
-    expect(isDisplayCurrency(null)).toBe(false);
+describe('formatCountdown', () => {
+  it('returns expired for zero or negative diff', () => {
+    expect(formatCountdown(0)).toBe('expired');
+    expect(formatCountdown(-1)).toBe('expired');
+    expect(formatCountdown(-60_000)).toBe('expired');
+  });
+
+  it('renders seconds for the final sub-minute', () => {
+    expect(formatCountdown(42_000)).toBe('42s');
+    expect(formatCountdown(1_000)).toBe('1s');
+    expect(formatCountdown(59_000)).toBe('59s');
+  });
+
+  it('renders minutes for durations of 60s or more', () => {
+    expect(formatCountdown(60_000)).toBe('1m');
+    expect(formatCountdown(90_000)).toBe('1m');
+    expect(formatCountdown(59 * 60_000)).toBe('59m');
+  });
+
+  it('renders hours and minutes for durations of an hour or more', () => {
+    expect(formatCountdown(60 * 60_000)).toBe('1h 0m');
+    expect(formatCountdown(90 * 60_000)).toBe('1h 30m');
   });
 });
