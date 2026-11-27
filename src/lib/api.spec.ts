@@ -82,6 +82,9 @@ describe('request()', () => {
     fetchMock.mockImplementation(
       (_url: string, init: RequestInit) =>
         new Promise((_resolve, reject) => {
+          // The mocked timeout signal is already aborted, and an 'abort'
+          // listener added afterwards never fires — check it up front too.
+          if (init.signal!.aborted) return reject(init.signal!.reason);
           init.signal!.addEventListener('abort', () => reject(init.signal!.reason));
         }),
     );

@@ -8,7 +8,10 @@ process.env.TZ = 'America/New_York';
 
 const m = vi.hoisted(() => ({ createMarket: vi.fn(), push: vi.fn() }));
 
-vi.mock('@/lib/api', () => ({ api: { createMarket: m.createMarket } }));
+vi.mock('@/lib/api', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/api')>()),
+  api: { createMarket: m.createMarket },
+}));
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: m.push }) }));
 vi.mock('@/lib/use-admin-key', async () => {
   const { useState } = await import('react');
@@ -27,15 +30,15 @@ beforeAll(async () => {
 
 const inputs = () => Array.from(document.querySelectorAll('input')) as HTMLInputElement[];
 
-async function fillAndSubmit() {
+async function fillAndSubmit(overrides: { grace?: string; baseFee?: string; minFee?: string } = {}) {
   await render(<CreateMarketPage />);
   const [adminKey, strike, expiry, grace, baseFee, minFee, liquidity] = inputs();
   await type(adminKey, 'secret-admin');
   await type(strike, '0.17');
   await type(expiry, '2026-03-15T14:30');
-  await type(grace, '45');
-  await type(baseFee, '150');
-  await type(minFee, '25');
+  await type(grace, overrides.grace ?? '45');
+  await type(baseFee, overrides.baseFee ?? '150');
+  await type(minFee, overrides.minFee ?? '25');
   await type(liquidity, '2500.5');
   const form = document.querySelector('form')!;
   const { act } = await import('react');
@@ -80,6 +83,37 @@ describe('CreateMarketPage', () => {
     expect(text()).toContain('admin key rejected');
     expect(m.push).not.toHaveBeenCalled();
     expect(getButton('Deploy market').disabled).toBe(false);
+  });
+
+  it.each([
+    ['empty grace', { grace: '' }, /grace period/i],
+    ['non-numeric grace', { grace: 'abc' }, /grace period/i],
+    ['empty base fee', { baseFee: '' }, /base fee/i],
+    ['non-numeric min fee', { minFee: 'abc' }, /min fee/i],
+    ['inverted fee curve', { baseFee: '100', minFee: '500' }, /at or below the base fee/],
+    ['fee above 10000 bps', { baseFee: '15000' }, /10000 bps/],
+  ])('blocks submit on %s with a field-specific message (#99/#100)', async (_name, overrides, message) => {
+    await fillAndSubmit(overrides);
+    expect(m.createMarket).not.toHaveBeenCalled();
+    expect(text()).toMatch(message);
+    expect(document.querySelector('[aria-invalid="true"]')).not.toBeNull();
+  });
+
+  it('marks the grace and fee inputs numeric and required (#99)', async () => {
+    await render(<CreateMarketPage />);
+    const [, , , grace, baseFee, minFee] = inputs();
+    for (const input of [grace, baseFee, minFee]) {
+      expect(input.getAttribute('inputmode')).toBe('numeric');
+      expect(input.required).toBe(true);
+    }
+  });
+
+  it('warns against blind retry when the deploy request times out (#101)', async () => {
+    m.createMarket.mockRejectedValue(new DOMException('signal timed out', 'TimeoutError'));
+    await fillAndSubmit();
+    expect(text()).toMatch(/may still be processing/);
+    expect(text()).toMatch(/Markets list before retrying/);
+    expect(m.push).not.toHaveBeenCalled();
   });
 });
 

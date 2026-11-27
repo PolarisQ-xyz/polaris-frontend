@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { api } from '@/lib/api';
+import { api, mutationErrorMessage } from '@/lib/api';
+import { validateFeeFields, type FeeField, type FeeFieldErrors } from '@/lib/create-market-validation';
 import { useAdminKey } from '@/lib/use-admin-key';
 import { xlmToStroops } from '@/lib/format';
 import { Card, CardBody } from '@/components/ui/card';
@@ -21,29 +22,51 @@ export default function CreateMarketPage() {
   const [liquidityXlm, setLiquidityXlm] = useState('1000');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FeeFieldErrors>({});
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setBusy(true);
     setError(null);
+    // #99/#100: never send NaN/null/0-by-accident or an inverted fee curve.
+    const validation = validateFeeFields({ graceMins, baseFeeBps, minFeeBps });
+    if (!validation.ok) {
+      setFieldErrors(validation.errors);
+      return;
+    }
+    setFieldErrors({});
+    setBusy(true);
     try {
       const strikeCents = Math.round(parseFloat(strikeUsd) * 100).toString();
       const expiryUnix = Math.floor(new Date(expiryLocal).getTime() / 1000);
       const market = await api.createMarket(adminKey, {
         strikePriceCents: strikeCents,
         expiry: expiryUnix,
-        gracePeriodSecs: Number(graceMins) * 60,
-        baseFeeBps: Number(baseFeeBps),
-        minFeeBps: Number(minFeeBps),
+        gracePeriodSecs: validation.values.gracePeriodSecs,
+        baseFeeBps: validation.values.baseFeeBps,
+        minFeeBps: validation.values.minFeeBps,
         initialLiquidityStroops: xlmToStroops(liquidityXlm).toString(),
       });
       router.push(`/market/${market.contractId}`);
     } catch (err) {
-      setError((err as Error).message);
+      // #101: a timeout doesn't mean the deploy failed — warn against a blind retry.
+      setError(mutationErrorMessage(err));
     } finally {
       setBusy(false);
     }
   }
+
+  const fieldError = (field: FeeField) =>
+    fieldErrors[field] ? (
+      <span id={`${field}-error`} role="alert" className="mt-1 block text-xs text-[var(--no)]">
+        {fieldErrors[field]}
+      </span>
+    ) : null;
+  const fieldProps = (field: FeeField) => ({
+    inputMode: 'numeric' as const,
+    required: true,
+    'aria-invalid': fieldErrors[field] ? true : undefined,
+    'aria-describedby': fieldErrors[field] ? `${field}-error` : undefined,
+  });
 
   return (
     <div className="mx-auto max-w-lg">
@@ -83,18 +106,36 @@ export default function CreateMarketPage() {
             </label>
             <label className="block text-sm">
               Grace period (mins)
-              <Input value={graceMins} onChange={(e) => setGraceMins(e.target.value)} className="mt-1" />
+              <Input
+                value={graceMins}
+                onChange={(e) => setGraceMins(e.target.value)}
+                className="mt-1"
+                {...fieldProps('graceMins')}
+              />
+              {fieldError('graceMins')}
             </label>
             <div className="grid grid-cols-2 gap-4">
               <label className="block text-sm">
                 Base fee (bps)
-                <Input value={baseFeeBps} onChange={(e) => setBaseFeeBps(e.target.value)} className="mt-1" />
+                <Input
+                  value={baseFeeBps}
+                  onChange={(e) => setBaseFeeBps(e.target.value)}
+                  className="mt-1"
+                  {...fieldProps('baseFeeBps')}
+                />
                 <span className="mt-1 block text-xs text-[var(--faint)]">fee on a fresh market</span>
+                {fieldError('baseFeeBps')}
               </label>
               <label className="block text-sm">
                 Min fee (bps)
-                <Input value={minFeeBps} onChange={(e) => setMinFeeBps(e.target.value)} className="mt-1" />
+                <Input
+                  value={minFeeBps}
+                  onChange={(e) => setMinFeeBps(e.target.value)}
+                  className="mt-1"
+                  {...fieldProps('minFeeBps')}
+                />
                 <span className="mt-1 block text-xs text-[var(--faint)]">floor as volume grows</span>
+                {fieldError('minFeeBps')}
               </label>
             </div>
             <label className="block text-sm">

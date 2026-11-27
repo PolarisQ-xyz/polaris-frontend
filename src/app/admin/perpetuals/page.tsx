@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { api, messageFromApiError, type OnChainPerpetual, type WatchedPerpetual } from '@/lib/api';
+import { api, mutationErrorMessage, type OnChainPerpetual, type WatchedPerpetual } from '@/lib/api';
 import { useAdminKey } from '@/components/admin-key-provider';
 import { Address } from '@/components/ui/address';
 import { Badge } from '@/components/ui/badge';
@@ -36,7 +36,7 @@ export default function AdminPerpetualsPage() {
       await api.triggerTerminate(adminKey, contractId);
       await queryClient.invalidateQueries({ queryKey: qk.perpetuals.list() });
     } catch (err) {
-      setActionError(messageFromApiError(err));
+      setActionError(mutationErrorMessage(err));
     } finally {
       setBusyId(null);
     }
@@ -51,7 +51,7 @@ export default function AdminPerpetualsPage() {
       setLastCheckpoint((prev) => ({ ...prev, [contractId]: centsToUsd(result.lastPriceCents) }));
       await queryClient.invalidateQueries({ queryKey: qk.perpetual.state(contractId) });
     } catch (err) {
-      setActionError(messageFromApiError(err));
+      setActionError(mutationErrorMessage(err));
     } finally {
       setBusyId(null);
     }
