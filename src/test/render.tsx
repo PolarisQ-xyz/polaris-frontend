@@ -37,6 +37,20 @@ export function byText(container: HTMLElement, text: string | RegExp): HTMLEleme
   return els.find((el) => (typeof text === 'string' ? el.textContent?.trim() === text : text.test(el.textContent ?? ''))) ?? null;
 }
 
+/** All rendered text in the document — for asserting on messages without a container. */
+export function text(): string {
+  return document.body.textContent ?? '';
+}
+
+/** The button whose trimmed text is exactly `label`; throws when absent so a typo fails loudly. */
+export function getButton(label: string): HTMLButtonElement {
+  const button = Array.from(document.querySelectorAll('button')).find(
+    (el) => el.textContent?.trim() === label,
+  );
+  if (!button) throw new Error(`getButton: no button labelled "${label}"`);
+  return button;
+}
+
 export async function click(el: Element | null) {
   if (!el) throw new Error('click: element not found');
   await act(async () => {

@@ -1,18 +1,43 @@
 import { config } from './config';
 
 /** A hung oracle (not erroring, just never responding) would otherwise leave every caller's busy state stuck forever with no recourse — same failure shape `freighter-wallet.ts`'s `withTimeout` guards against for signing. */
-const REQUEST_TIMEOUT_MS = 20_000;
+export const REQUEST_TIMEOUT_MS = 20_000;
 
-async function request<T>(path: string, init?: RequestInit, validate?: Validator<T>): Promise<T> {
+/**
+ * Admin mutations (`createMarket`, `createPerpetual`, settle/cancel/terminate/checkpoint)
+ * make the backend shell out to `stellar contract deploy` / `invoke`, which is
+ * routinely slower than 20s. Aborting them client-side doesn't stop the
+ * server, so a too-short budget just invites a blind retry that deploys a
+ * duplicate funded market (#101).
+ */
+export const ADMIN_MUTATION_TIMEOUT_MS = 120_000;
+
+type RequestOptions = RequestInit & {
+  /** Per-call timeout override; ignored when the caller passes its own `signal`. */
+  timeoutMs?: number;
+};
+
+/** True when a request was aborted by its timeout (or a caller's abort), not rejected by the server. */
+export function isTimeoutError(err: unknown): boolean {
+  const name = (err as { name?: string } | null)?.name;
+  return name === 'TimeoutError' || name === 'AbortError';
+}
+
+/** Shown instead of a generic failure when an admin mutation times out — the server may still finish (#101). */
+export const MUTATION_TIMEOUT_MESSAGE =
+  'The request timed out, but the backend may still be processing it. Check the Markets list before retrying — retrying now could create a duplicate.';
+
+async function request<T>(path: string, init?: RequestOptions, validate?: Validator<T>): Promise<T> {
+  const { timeoutMs = REQUEST_TIMEOUT_MS, ...fetchInit } = init ?? {};
   const res = await fetch(`${config.oracleUrl}${path}`, {
-    ...init,
+    ...fetchInit,
     // Needed for the email-login session cookie (httpOnly, set by the
     // backend) to be sent on same-site-but-cross-origin requests like
     // localhost:3000 -> localhost:3001. Harmless for every other endpoint,
     // which simply has no cookie to send.
     credentials: 'include',
     headers: { 'content-type': 'application/json', ...init?.headers },
-    signal: init?.signal ?? AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    signal: init?.signal ?? AbortSignal.timeout(timeoutMs),
   });
   if (!res.ok) {
     const body = await res.text().catch(() => '');
@@ -126,6 +151,11 @@ export function messageFromApiError(err: unknown): string {
   }
 }
 
+/** Error copy for admin mutations: a timeout warns against blind retry (#101); anything else uses the backend's own message. */
+export function mutationErrorMessage(err: unknown): string {
+  return isTimeoutError(err) ? MUTATION_TIMEOUT_MESSAGE : messageFromApiError(err);
+}
+
 export interface WatchedMarket {
   contractId: string;
   strikePriceCents: string;
@@ -201,6 +231,105 @@ export const api = {
       validatePosition,
     ),
   getPrice: (id: string) =>
-    request<{ yesBps: number; noBps: number; yesBpsChange: number | null }>(`/markets/${id}
+    request<{ yesBps: number; noBps: number; yesBpsChange: number | null }>(`/markets/${id}/price`, undefined, validatePrice),
+  getFee: (id: string) => request<{ feeBps: number }>(`/markets/${id}/fee`, undefined, validateFee),
+  getTickerPrice: (feedId: string) => request<unknown>(`/prices/${feedId}`),
 
-/* … truncated 4742 chars — edit only what you need near the top … */
+  faucet: (address: string) =>
+    request<{ funded: boolean; alreadyExists: boolean }>('/markets/faucet', {
+      method: 'POST',
+      body: JSON.stringify({ address }),
+    }),
+
+  /** Spendable native-XLM collateral balance, in stroops — same shape for a Freighter or email-custodial wallet. */
+  getBalance: (address: string) =>
+    request<{ balanceStroops: string }>(`/wallets/balance?address=${encodeURIComponent(address)}`),
+
+  // email login (fallback for browsers/devices without a Freighter-like wallet extension — see `wallet-provider.tsx`)
+  requestEmailCode: (email: string) =>
+    request<{ sent: boolean }>('/auth/email/request', { method: 'POST', body: JSON.stringify({ email }) }),
+  verifyEmailCode: (email: string, code: string) =>
+    request<{ address: string }>('/auth/email/verify', {
+      method: 'POST',
+      body: JSON.stringify({ email, code }),
+    }),
+  getEmailSession: () => request<{ email: string; address: string }>('/auth/email/me'),
+  emailLogout: () => request<{ ok: boolean }>('/auth/email/logout', { method: 'POST' }),
+  emailTrade: (params: {
+    contractId: string;
+    function: string;
+    args: Record<string, string | number>;
+    contractKind?: 'market' | 'perpetual';
+  }) => request<{ txHash: string }>('/auth/email/trade', { method: 'POST', body: JSON.stringify(params) }),
+
+  // perpetuals — see `polaris-oracle/README.md`'s "Perpetual markets" for
+  // why this is a parallel set of endpoints/types, not a `market`-shaped
+  // union: no strike/expiry/settle exist on this contract at all.
+  listPerpetuals: () => request<WatchedPerpetual[]>('/perpetuals'),
+  getPerpetual: (id: string) => request<WatchedPerpetual>(`/perpetuals/${id}`),
+  getPerpetualState: (id: string) => request<OnChainPerpetual>(`/perpetuals/${id}/state`, undefined, validatePerpetualState),
+  getPerpetualPosition: (id: string, address: string) =>
+    request<{ yes: string; no: string }>(
+      `/perpetuals/${id}/position?address=${encodeURIComponent(address)}`,
+      undefined,
+      validatePosition,
+    ),
+  getPerpetualPrice: (id: string) => request<{ yesBps: number; noBps: number }>(`/perpetuals/${id}/price`, undefined, validatePrice),
+  getPerpetualFee: (id: string) => request<{ feeBps: number }>(`/perpetuals/${id}/fee`, undefined, validateFee),
+
+  // admin — every mutation below uses ADMIN_MUTATION_TIMEOUT_MS (#101)
+  /** Pass `signal` to cancel from the UI; it replaces the built-in timeout entirely. */
+  createPerpetual: (adminKey: string, body: Record<string, unknown>, signal?: AbortSignal) =>
+    request<WatchedPerpetual & { initTxHash: string }>('/perpetuals/create', {
+      method: 'POST',
+      headers: { 'x-admin-key': adminKey },
+      body: JSON.stringify(body),
+      timeoutMs: ADMIN_MUTATION_TIMEOUT_MS,
+      signal,
+    }),
+  triggerTerminate: (adminKey: string, id: string) =>
+    request<WatchedPerpetual>(`/perpetuals/${id}/terminate`, {
+      method: 'POST',
+      headers: { 'x-admin-key': adminKey },
+      timeoutMs: ADMIN_MUTATION_TIMEOUT_MS,
+    }),
+  /** Admin-triggered, not scheduled — see `polaris-oracle/README.md`'s "Perpetual markets". Only meaningful for a perpetual whose `price_oracle` bundle is actually configured (`MOCK_REDSTONE_CONTRACT` set on the backend); otherwise the backend itself returns a clear error. */
+  triggerCheckpoint: (adminKey: string, id: string) =>
+    request<OnChainPerpetual & { txHash: string }>(`/perpetuals/${id}/checkpoint`, {
+      method: 'POST',
+      headers: { 'x-admin-key': adminKey },
+      timeoutMs: ADMIN_MUTATION_TIMEOUT_MS,
+    }),
+
+  // admin
+  /** Pass `signal` to cancel from the UI; it replaces the built-in timeout entirely. */
+  createMarket: (adminKey: string, body: Record<string, unknown>, signal?: AbortSignal) =>
+    request<WatchedMarket & { initTxHash: string }>('/markets/create', {
+      method: 'POST',
+      headers: { 'x-admin-key': adminKey },
+      body: JSON.stringify(body),
+      timeoutMs: ADMIN_MUTATION_TIMEOUT_MS,
+      signal,
+    }),
+  triggerSettle: (adminKey: string, id: string) =>
+    request<WatchedMarket>(`/markets/${id}/settle`, {
+      method: 'POST',
+      headers: { 'x-admin-key': adminKey },
+      timeoutMs: ADMIN_MUTATION_TIMEOUT_MS,
+    }),
+  triggerCancel: (adminKey: string, id: string) =>
+    request<WatchedMarket>(`/markets/${id}/cancel`, {
+      method: 'POST',
+      headers: { 'x-admin-key': adminKey },
+      timeoutMs: ADMIN_MUTATION_TIMEOUT_MS,
+    }),
+
+  // admin dashboard — every call here is what AdminKeyProvider's gate probes with
+  getAdminOverview: (adminKey: string) => adminGet<AdminOverview>('/admin/overview', adminKey),
+  getAdminFeeRevenue: (adminKey: string) => adminGet<AdminFeeRevenue>('/admin/fee-revenue', adminKey),
+  getAdminTreasury: (adminKey: string) => adminGet<AdminTreasury>('/admin/treasury', adminKey),
+  getAdminWallets: (adminKey: string) => adminGet<AdminWallets>('/admin/wallets', adminKey),
+  getAdminNetwork: (adminKey: string) => adminGet<AdminNetwork>('/admin/network', adminKey),
+  getAdminSettlementChecks: (adminKey: string) =>
+    adminGet<{ checks: SettlementCheck[] }>('/admin/settlement-checks', adminKey),
+};

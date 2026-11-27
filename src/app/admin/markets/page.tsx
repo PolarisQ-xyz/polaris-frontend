@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { api, mutationErrorMessage } from '@/lib/api';
 import type { Market } from '@/lib/types';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
@@ -46,7 +46,7 @@ export default function AdminMarketsPage() {
       else await api.triggerCancel(adminKey, contractId);
       await queryClient.invalidateQueries({ queryKey: qk.markets.list() });
     } catch (err) {
-      setError((err as Error).message);
+      setError(mutationErrorMessage(err));
     } finally {
       setBusyId(null);
     }

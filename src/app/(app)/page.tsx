@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { api, type WatchedMarket } from '@/lib/api';
 import { Card, CardBody } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { OddsBar } from '@/components/odds-bar';
 import { TradeCard } from '@/components/trade-card';
 import { centsToUsd, statusLabel } from '@/lib/format';
 import { rankMarkets } from '@/lib/rank-markets';
+import { nextFeaturedId, otherRankedCount, resolveFeaturedMarket } from '@/lib/featured-market';
 import { qk } from '@/lib/query-keys';
 import { useCountdown } from '@/lib/use-countdown';
 
@@ -30,10 +31,21 @@ export default function HomePage() {
     queryFn: api.listMarkets,
     refetchInterval: 30_000,
   });
-  const [featuredIndex, setFeaturedIndex] = useState(0);
+  // #102: track the featured market by contractId, not by index into a list
+  // that is re-ranked on every refetch.
+  const [featuredId, setFeaturedId] = useState<string | null>(null);
+  const [lastFeatured, setLastFeatured] = useState<WatchedMarket | null>(null);
 
   const ranked = markets ? rankMarkets(markets) : [];
-  const featured = ranked.length > 0 ? ranked[featuredIndex % ranked.length] : null;
+  const featured = resolveFeaturedMarket(ranked, markets ?? [], featuredId, lastFeatured);
+  const otherCount = otherRankedCount(ranked, featured?.contractId ?? null);
+
+  // Pin the first market shown (so a later refetch can't swap it) and keep
+  // its latest row for when it drops out of `ranked`. Adjusting state during
+  // render, guarded so it settles after one pass:
+  // https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+  if (featured && featuredId === null) setFeaturedId(featured.contractId);
+  if (featured && featured !== lastFeatured) setLastFeatured(featured);
   const countdown = useCountdown(featured?.status === 'watching' ? featured.expiry : undefined);
 
   const { data: price } = useQuery({
@@ -80,13 +92,13 @@ export default function HomePage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <span className="text-xs font-semibold uppercase tracking-wide text-[var(--faint)]">XLM/USD</span>
-        {ranked.length > 1 && (
+        {otherCount > 0 && (
           <button
             type="button"
-            onClick={() => setFeaturedIndex((i) => i + 1)}
+            onClick={() => setFeaturedId(nextFeaturedId(ranked, featured.contractId))}
             className="text-xs font-semibold text-[var(--muted)] hover:text-[var(--ink)]"
           >
-            Next market ({ranked.length - 1} more) →
+            Next market ({otherCount} more) →
           </button>
         )}
       </div>
